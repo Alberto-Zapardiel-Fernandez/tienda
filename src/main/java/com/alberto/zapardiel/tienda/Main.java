@@ -1,6 +1,6 @@
 package com.alberto.zapardiel.tienda;
 
-import com.alberto.zapardiel.tienda.service.ConnectionService;
+import com.alberto.zapardiel.tienda.utils.ConnectionService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

@@ -1,6 +1,5 @@
-package com.alberto.zapardiel.tienda.service;
+package com.alberto.zapardiel.tienda.utils;
 
-import com.alberto.zapardiel.tienda.Connect;
 import org.springframework.stereotype.Service;
 
 import java.sql.Connection;

@@ -1,4 +1,4 @@
-package com.alberto.zapardiel.tienda;
+package com.alberto.zapardiel.tienda.utils;
 
 import lombok.Data;
 import org.springframework.beans.factory.annotation.Value;
