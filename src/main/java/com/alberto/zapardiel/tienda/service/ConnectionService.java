@@ -12,7 +12,7 @@ public class ConnectionService {
 
     private static Connect connection;
 
-    public ConnectionService(Connect connection2){connection = connection2;}
+    public ConnectionService(Connect con){connection = con;}
 
     public static Connection getConnection(){
         try {
