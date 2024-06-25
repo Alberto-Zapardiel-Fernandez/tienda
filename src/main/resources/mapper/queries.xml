@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN" "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.alberto.zapardiel.tienda.service.UserServiceImpl">
+
+                        <!-- Tienda -->
+
+    <!-- LISTA DE Usuarios -->
+    <select id="getAllUsers" resultMap="user">
+        select * from usuarios;
+    </select>
+    <resultMap id="user" type="com.alberto.zapardiel.tienda.model.User">
+        <result column="id" property="id" jdbcType="INTEGER"/>
+        <result column="nombre" property="name" jdbcType="VARCHAR"/>
+        <result column="rol" property="rol" jdbcType="INTEGER"/>
+        <result column="dni" property="dni" jdbcType="VARCHAR"/>
+        <result column="dni" property="dni" jdbcType="VARCHAR"/>
+        <result column="telefono" property="phone" jdbcType="VARCHAR"/>
+    </resultMap>
+
+</mapper>
