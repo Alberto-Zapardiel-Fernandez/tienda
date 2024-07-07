@@ -1,1 +1,19 @@
-/* You can add global styles to this file, and also import other style files */
+/* Variables de color */
+:root {
+  --main-bg-color: #eee;
+  --main-font-color: #111;
+}
+
+:root {
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
+}
+
+html, body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  font-family: Roboto, "Helvetica Neue", sans-serif;
+}
