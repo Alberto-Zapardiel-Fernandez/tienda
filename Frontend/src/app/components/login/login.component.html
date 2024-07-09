@@ -1,0 +1,52 @@
+<div>
+  <h2>Login</h2>
+  <form action="#">
+    <div class="form-group">
+      <label for="nombre">Nombre</label>
+      <input [formControl]="name" type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+    </div>
+    <div class="form-group">
+      <label for="pass">Contraseña</label>
+      <input [formControl]="pass" type="password" class="form-control" id="pass" placeholder="Contraseña" required>
+    </div>
+    <!--TODO Este check lo podemos usar para almacenar las credenciales en el storage-->
+    <div class="form-group form-check">
+      <input type="checkbox" class="form-check-input" id="check">
+      <label class="form-check-label" for="check">Mantener sesión iniciada</label>
+    </div>
+    <button type="submit" class="btn btn-primary">Entrar</button>
+  </form>
+</div>
+<!--Si no hay usuarios saco que no hay, si los hay saco la tabla-->
+@if (userList == null) {
+<p>No hay usuarios registrados.</p>
+}@else {
+<table class="table">
+  <thead>
+    <tr>
+      <th scope="col">#</th>
+      <th scope="col">Nombre</th>
+      <th scope="col">Apellidos</th>
+      <th scope="col">Email</th>
+      <th scope="col">Pass</th>
+      <th scope="col">Rol</th>
+      <th scope="col">DNI</th>
+      <th scope="col">Telefono</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      @for (user of userList; track $index) {
+      <th scope="row">{{$index + 1}}</th>
+      <td>{{user.name}}</td>
+      <td>{{user.lastName}}</td>
+      <td>{{user.email}}</td>
+      <td>{{user.pass}}</td>
+      <td>{{user.rol === 1 ? 'Administrador' : 'Empleado'}}</td>
+      <td>{{user.dni}}</td>
+      <td>{{user.phone}}</td>
+      }
+    </tr>
+  </tbody>
+</table>
+}
