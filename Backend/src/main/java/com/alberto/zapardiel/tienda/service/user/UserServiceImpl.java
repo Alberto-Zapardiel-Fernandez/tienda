@@ -2,6 +2,7 @@ package com.alberto.zapardiel.tienda.service.user;
 
 import com.alberto.zapardiel.tienda.model.User;
 import com.alberto.zapardiel.tienda.repository.UserRepository;
+import com.alberto.zapardiel.tienda.service.crypto.CryptoService;
 import com.alberto.zapardiel.tienda.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -27,6 +28,11 @@ public class UserServiceImpl implements UserService{
     private UserRepository userRepository;
 
     /**
+     * Crypto service
+     */
+    private CryptoService cryptoService;
+
+    /**
      * Method to get a list of users
      *
      * @return the user's list
@@ -44,7 +50,7 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public User createUser(User user) {
-        //TODO Aqui encriptar las pass
+        //TODO Aqui encriptar las pass y quizá no retornar el usuario y retornar mejor un string o algo así
         user.setName(Utils.capitalize(user.getName()));
         return userRepository.save(user);
     }
@@ -89,6 +95,7 @@ public class UserServiceImpl implements UserService{
     public User findByName(String name){
         return userRepository.findByName(Utils.capitalize(name));
     }
+
     /**
      * Method to find a user by his dni
      * @param dni the dni
@@ -96,5 +103,27 @@ public class UserServiceImpl implements UserService{
      */
     public User findByDni(String dni){
         return userRepository.findByDni(dni);
+    }
+
+    /**
+     * Method to find the user, if exists, login him
+     * @param email the email
+     * @param pass the password
+     * @return the user
+     */
+    public User findByEmailAndPass(String email, String pass){
+        User user = userRepository.findByEmail(email);
+        if(user != null){
+            if (Boolean.TRUE.equals(cryptoService.matchPass(pass.trim().toUpperCase(), user.getPass()))){
+                log.info("Match");
+                return userRepository.findByEmailAndPass(email,user.getPass());
+            }else{
+                log.info("No match");
+                return new User();
+            }
+        }else{
+            log.info("Email not found");
+            return User.builder().id(-1).build();
+        }
     }
 }
