@@ -50,8 +50,9 @@ public class UserServiceImpl implements UserService{
      */
     @Override
     public User createUser(User user) {
-        //TODO Aqui encriptar las pass y quizá no retornar el usuario y retornar mejor un string o algo así
+        user.setEmail(user.getEmail().toLowerCase());
         user.setName(Utils.capitalize(user.getName()));
+        user.setPass(cryptoService.encryptPass(user.getPass().trim().toUpperCase()));
         return userRepository.save(user);
     }
 
@@ -112,7 +113,7 @@ public class UserServiceImpl implements UserService{
      * @return the user
      */
     public User findByEmailAndPass(String email, String pass){
-        User user = userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email.trim().toLowerCase());
         if(user != null){
             if (Boolean.TRUE.equals(cryptoService.matchPass(pass.trim().toUpperCase(), user.getPass()))){
                 log.info("Match");
