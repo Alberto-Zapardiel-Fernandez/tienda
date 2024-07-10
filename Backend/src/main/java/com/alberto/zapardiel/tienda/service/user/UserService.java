@@ -35,9 +35,10 @@ public interface UserService {
     /**
      * Method to update a user
      * @param user the user
+     * @param dni the dni
      * @return the user updated
      */
-     User updateUser(User user) ;
+     User updateUser(User user, String dni) ;
 
     /**
      * Method to delete a user
