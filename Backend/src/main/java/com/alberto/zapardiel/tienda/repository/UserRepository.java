@@ -24,4 +24,18 @@ public interface UserRepository extends JpaRepository<User,Long> {
      * @return the user
      */
     User findByDni(String dni);
+
+    /**
+     * Method to find the user, if exists, login him
+     * @param email the email
+     * @param pass the password
+     * @return the user
+     */
+    User findByEmailAndPass(String email, String pass);
+    /**
+     * Method to find the user, if exists, login him
+     * @param email the email
+     * @return the user
+     */
+    User findByEmail(String email);
 }

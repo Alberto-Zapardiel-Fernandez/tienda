@@ -1,18 +1,19 @@
 <div>
   <h2>Login</h2>
-  <form action="#">
-    <div class="form-group">
-      <label for="nombre">Nombre</label>
-      <input [formControl]="name" type="text" class="form-control" id="nombre" placeholder="Nombre" required>
+  <form (ngSubmit)="login()">
+    <div class="mb-3">
+      <label for="email" class="form-label">Correo electrónico:</label>
+      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="email" required>
     </div>
-    <div class="form-group">
-      <label for="pass">Contraseña</label>
-      <input [formControl]="pass" type="password" class="form-control" id="pass" placeholder="Contraseña" required>
+    <div class="mb-3">
+      <label for="password" class="form-label">Contraseña:</label>
+      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="pass" required>
     </div>
     <!--TODO Este check lo podemos usar para almacenar las credenciales en el storage-->
     <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="check">
-      <label class="form-check-label" for="check">Mantener sesión iniciada</label>
+      <input type="checkbox" class="form-check-input" id="check" [(ngModel)]="check" (change)="onCheckboxChange()"
+        [ngModelOptions]="{standalone: true}">
+      <label class=" form-check-label" for="check">Mantener sesión iniciada</label>
     </div>
     <button type="submit" class="btn btn-primary">Entrar</button>
   </form>

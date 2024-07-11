@@ -35,9 +35,10 @@ public interface UserService {
     /**
      * Method to update a user
      * @param user the user
+     * @param dni the dni
      * @return the user updated
      */
-     User updateUser(User user) ;
+     User updateUser(User user, String dni) ;
 
     /**
      * Method to delete a user
@@ -51,10 +52,19 @@ public interface UserService {
      * @return the user
      */
     User findByName(String name);
+
     /**
      * Method to get a user by his dni
      * @param dni the dni
      * @return the user
      */
     User findByDni(String dni);
+
+    /**
+     * Method to get a user by his name and pass
+     * @param name the name
+     * @param pass the password
+     * @return the user
+     */
+    User findByEmailAndPass(String name, String pass);
 }
