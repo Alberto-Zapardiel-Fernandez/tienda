@@ -1,19 +1,38 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { UserInterface } from '../../interfaces/user.interface';
-import { FormsModule } from '@angular/forms';
+import {
+  FormControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   providers: [UserService],
-  imports: [FormsModule],
+  imports: [
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   userList: UserInterface[] = [];
-
+  readonly mail = new FormControl('', [Validators.required, Validators.email]);
+  readonly password = new FormControl('', [Validators.required]);
+  errorMessage = signal('');
+  hide = signal(true);
   email: string = '';
   pass: string = '';
   check: boolean = false;
@@ -23,9 +42,22 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {
     this.getUsers();
   }
-
+  hidePassword(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
+  updateErrorMessage() {
+    if (this.mail.hasError('required')) {
+      this.errorMessage.set('Debes introducir un email correcto');
+    } else if (this.mail.hasError('email')) {
+      this.errorMessage.set('No es un email válido');
+    } else {
+      this.errorMessage.set('');
+    }
+  }
   //Método para el login del usuario
   login() {
+    console.log(this.email, this.pass);
     // Validación de los datos
     this.validacion = this.validar();
     if (this.validacion) {

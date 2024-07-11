@@ -1,22 +1,29 @@
 <div>
   <h2>Login</h2>
-  <form (ngSubmit)="login()">
-    <div class="mb-3">
-      <label for="email" class="form-label">Correo electrónico:</label>
-      <input type="email" class="form-control" id="email" name="email" [(ngModel)]="email" required>
-    </div>
-    <div class="mb-3">
-      <label for="password" class="form-label">Contraseña:</label>
-      <input type="password" class="form-control" id="password" name="password" [(ngModel)]="pass" required>
-    </div>
-    <!--TODO Este check lo podemos usar para almacenar las credenciales en el storage-->
-    <div class="form-group form-check">
-      <input type="checkbox" class="form-check-input" id="check" [(ngModel)]="check" (change)="onCheckboxChange()"
-        [ngModelOptions]="{standalone: true}">
-      <label class=" form-check-label" for="check">Mantener sesión iniciada</label>
-    </div>
-    <button type="submit" class="btn btn-primary">Entrar</button>
-  </form>
+  <div class="example-container">
+    <form (ngSubmit)="login()">
+      <mat-form-field>
+        <mat-label>Introduce tu email</mat-label>
+        <input matInput placeholder="pat@example.com" [formControl]="mail" (blur)="updateErrorMessage()" required />
+        @if (mail.invalid) {
+        <mat-error>{{errorMessage()}}</mat-error>
+        }
+      </mat-form-field>
+      <br>
+      <mat-form-field>
+        <mat-label>Introduce tu contraseña</mat-label>
+        <input [formControl]="password" matInput [type]="hide() ? 'password' : 'text'" />
+        <button class="boton-esconder" mat-icon-button matSuffix (click)="hidePassword($event)"
+          [attr.aria-label]="'Ocultar password'" [attr.aria-pressed]="hide()">
+          <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
+        </button>
+      </mat-form-field>
+      <div class="button-row">
+        <button mat-flat-button>Login</button>
+        <button mat-flat-button>Registrase</button>
+      </div>
+    </form>
+  </div>
 </div>
 <!--Si no hay usuarios saco que no hay, si los hay saco la tabla-->
 @if (userList == null) {
