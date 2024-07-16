@@ -2,6 +2,13 @@
   <h2>Login</h2>
   <div class="example-container">
     <form (ngSubmit)="login()">
+      <mat-form-field *ngIf="register">
+        <mat-label>Nombre</mat-label>
+        <input matInput placeholder="Alberto" [formControl]="nombre" (blur)="updateErrorMessage()" required />
+        @if (mail.invalid) {
+        <mat-error>{{errorMessage()}}</mat-error>
+        }
+      </mat-form-field>
       <mat-form-field>
         <mat-label>Introduce tu email</mat-label>
         <input matInput placeholder="pat@example.com" [formControl]="mail" (blur)="updateErrorMessage()" required />
@@ -19,8 +26,8 @@
         </button>
       </mat-form-field>
       <div class="button-row">
-        <button mat-flat-button>Login</button>
-        <button mat-flat-button>Registrase</button>
+        <button mat-flat-button>{{register ? 'Registrase' : "Login"}}</button>
+        <button (click)="toogleRegister($event)" mat-flat-button>{{register ? 'Volver' : "Registrarse"}}</button>
       </div>
     </form>
   </div>
