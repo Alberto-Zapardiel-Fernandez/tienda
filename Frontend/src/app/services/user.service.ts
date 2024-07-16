@@ -27,4 +27,8 @@ export class UserService {
       .post<any>(this.API_URL + endpoint, body, { headers }) // Envía el JSON en el body
       .pipe((res) => res);
   }
+
+  setUser() {
+    // TODO Implementar el código para guardar el usuario
+  }
 }
