@@ -2,9 +2,18 @@ h2 {
   text-align: center;
 }
 
-form {
-  width: 30%;
-  margin: 0 auto;
+.example-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  gap: 4%;
 }
 
 div {
@@ -13,4 +22,12 @@ div {
 
 .form-check {
   margin-left: 6%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.boton-esconder {
+  margin-right: 10px;
 }

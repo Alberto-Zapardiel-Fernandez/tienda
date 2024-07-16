@@ -1,37 +1,104 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, signal } from '@angular/core';
 import { UserService } from '../../services/user.service';
 import { UserInterface } from '../../interfaces/user.interface';
-import { FormsModule } from '@angular/forms';
+import { CommonModule } from '@angular/common';
+import {
+  FormControl,
+  Validators,
+  FormsModule,
+  ReactiveFormsModule,
+} from '@angular/forms';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
 
 @Component({
   selector: 'app-login',
   standalone: true,
   providers: [UserService],
-  imports: [FormsModule],
+  imports: [
+    CommonModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatIconModule,
+    MatButtonModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
 })
 export class LoginComponent implements OnInit {
   userList: UserInterface[] = [];
-
-  email: string = '';
-  pass: string = '';
+  readonly mail = new FormControl('', [Validators.required, Validators.email]);
+  readonly password = new FormControl('', [Validators.required]);
+  readonly nombre = new FormControl('', [Validators.required]);
+  errorMessage = signal('');
+  hide = signal(true);
   check: boolean = false;
   validacion: boolean = false;
+  email: string = '';
+  pass: string = '';
+  nombreValue: string = '';
+  register: boolean = false;
 
   constructor(private userService: UserService) {}
   ngOnInit(): void {
     this.getUsers();
   }
-
+  toogleRegister(event: MouseEvent): void {
+    event.preventDefault();
+    this.register = this.register == false ? true : false;
+    console.log(this.register);
+    this.nombreValue = '';
+    this.mail.reset();
+    this.password.reset();
+    this.errorMessage.set('');
+    this.validacion = false;
+  }
+  hidePassword(event: MouseEvent) {
+    this.hide.set(!this.hide());
+    event.stopPropagation();
+  }
+  updateErrorMessage() {
+    if (this.mail.hasError('required')) {
+      this.errorMessage.set('Debes introducir un email correcto');
+    } else if (this.mail.hasError('email')) {
+      this.errorMessage.set('No es un email válido');
+    } else {
+      this.errorMessage.set('');
+    }
+  }
   //Método para el login del usuario
   login() {
+    this.email = this.mail.value == null ? '' : this.mail.value;
+    this.pass = this.password.value == null ? '' : this.password.value;
     // Validación de los datos
     this.validacion = this.validar();
     if (this.validacion) {
       // Código para el login
-      this.getUser(this.email, this.pass);
+      this.register ? this.getUser(this.email, this.pass) : this.setUser();
     }
+  }
+  setUser() {
+    /*
+    TODO Implementar el método setUser con nombre, apellidos...
+    poner el rol por defecto en 0 para que no sea admin y ya se cambiará si quiere el administrador
+    Agregar los campos necesarios cuando register sea true
+    this.userService
+      .setUser('user/create', { email: this.email, pass: this.pass })
+      .subscribe({
+        next: (result) => {
+          console.log(result);
+          this.register = false;
+          alert('Usuario creado correctamente');
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        },
+      });
+    */
   }
   //Método para obtener un usuario específico por email y contraseña
   getUser(email: string, pass: string) {
