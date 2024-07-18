@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +35,17 @@ export class LoginComponent implements OnInit {
   readonly mail = new FormControl('', [Validators.required, Validators.email]);
   readonly password = new FormControl('', [Validators.required]);
   readonly nombre = new FormControl('', [Validators.required]);
+  readonly apellidos = new FormControl('', [Validators.required]);
+  readonly dni = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(9),
+    Validators.minLength(9),
+  ]);
+  readonly telefono = new FormControl('', [
+    Validators.required,
+    Validators.maxLength(13),
+    Validators.minLength(8),
+  ]);
   errorMessage = signal('');
   hide = signal(true);
   check: boolean = false;
@@ -41,7 +53,11 @@ export class LoginComponent implements OnInit {
   email: string = '';
   pass: string = '';
   nombreValue: string = '';
+  apellidosValue: string = '';
+  dniValue: string = '';
+  telefonoValue: string = '';
   register: boolean = false;
+  prueba: any;
 
   constructor(private userService: UserService) {}
   ngOnInit(): void {
@@ -52,6 +68,9 @@ export class LoginComponent implements OnInit {
     this.register = this.register == false ? true : false;
     console.log(this.register);
     this.nombreValue = '';
+    this.apellidosValue = '';
+    this.dniValue = '';
+    this.telefonoValue = '';
     this.mail.reset();
     this.password.reset();
     this.errorMessage.set('');
@@ -63,7 +82,7 @@ export class LoginComponent implements OnInit {
   }
   updateErrorMessage() {
     if (this.mail.hasError('required')) {
-      this.errorMessage.set('Debes introducir un email correcto');
+      this.errorMessage.set('Debes introducir un valor correcto');
     } else if (this.mail.hasError('email')) {
       this.errorMessage.set('No es un email válido');
     } else {
@@ -74,31 +93,65 @@ export class LoginComponent implements OnInit {
   login() {
     this.email = this.mail.value == null ? '' : this.mail.value;
     this.pass = this.password.value == null ? '' : this.password.value;
+    //Si vamos a registrar, guardamos los valores que hay puestos
+    if (this.register) {
+      this.nombreValue = this.nombre.value == null ? '' : this.nombre.value;
+      this.apellidosValue =
+        this.apellidos.value == null ? '' : this.apellidos.value;
+      this.dniValue = this.dni.value == null ? '' : this.dni.value;
+      this.telefonoValue =
+        this.telefono.value == null ? '' : this.telefono.value;
+    }
     // Validación de los datos
     this.validacion = this.validar();
     if (this.validacion) {
-      // Código para el login
-      this.register ? this.getUser(this.email, this.pass) : this.setUser();
+      // Código para el login o registro
+      !this.register
+        ? this.getUser(this.email, this.pass)
+        : this.setUser(
+            this.nombreValue,
+            this.apellidosValue,
+            this.email,
+            this.pass,
+            0,
+            this.dniValue,
+            this.telefonoValue
+          );
     }
   }
-  setUser() {
-    /*
-    TODO Implementar el método setUser con nombre, apellidos...
-    poner el rol por defecto en 0 para que no sea admin y ya se cambiará si quiere el administrador
-    Agregar los campos necesarios cuando register sea true
+
+  setUser(
+    name: string,
+    lastName: string,
+    email: string,
+    pass: string,
+    rol: number,
+    dni: string,
+    phone: string
+  ) {
     this.userService
-      .setUser('user/create', { email: this.email, pass: this.pass })
+      .setUser('user', {
+        name,
+        lastName,
+        email,
+        pass,
+        rol,
+        dni,
+        phone,
+      })
       .subscribe({
-        next: (result) => {
-          console.log(result);
-          this.register = false;
-          alert('Usuario creado correctamente');
+        next: (response) => {
+          // Maneja el inicio de sesión exitoso
+          console.log('Usuario creado con éxito:', response);
+          // Puedes almacenar los datos de la respuesta (por ejemplo, token) para uso posterior
+          // Puedes redirigir a un componente diferente (por ejemplo, panel de control)
         },
-        error: (err) => {
-          console.error('Error:', err);
+        error: (error) => {
+          // Maneja el error de inicio de sesión
+          console.error('Error al registrarse:', error);
+          // Puedes mostrar un mensaje de error al usuario
         },
       });
-    */
   }
   //Método para obtener un usuario específico por email y contraseña
   getUser(email: string, pass: string) {
