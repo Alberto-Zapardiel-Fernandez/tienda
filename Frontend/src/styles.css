@@ -4,13 +4,12 @@
   --main-font-color: #111;
 }
 
-:root {
-  background-color: var(--main-bg-color);
-  color: var(--main-font-color);
-}
+
 html,
 body {
   height: 100%;
+  background-color: var(--main-bg-color);
+  color: var(--main-font-color);
 }
 
 body {

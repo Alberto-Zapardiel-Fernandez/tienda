@@ -4,7 +4,14 @@
     <form (ngSubmit)="login()">
       <mat-form-field *ngIf="register">
         <mat-label>Nombre</mat-label>
-        <input matInput placeholder="Alberto" [formControl]="nombre" (blur)="updateErrorMessage()" required />
+        <input matInput placeholder="Tu nombre" [formControl]="nombre" (blur)="updateErrorMessage()" required />
+        @if (mail.invalid) {
+        <mat-error>{{errorMessage()}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field *ngIf="register">
+        <mat-label>Apellidos</mat-label>
+        <input matInput placeholder="Tus apellidos" [formControl]="apellidos" (blur)="updateErrorMessage()" required />
         @if (mail.invalid) {
         <mat-error>{{errorMessage()}}</mat-error>
         }
@@ -24,6 +31,22 @@
           [attr.aria-label]="'Ocultar password'" [attr.aria-pressed]="hide()">
           <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
+      </mat-form-field>
+      <mat-form-field *ngIf="register">
+        <mat-label>DNI</mat-label>
+        <input matInput placeholder="Tu dni" [formControl]="dni" minlength="9" maxlength="9"
+          (blur)="updateErrorMessage()" required />
+        @if (mail.invalid) {
+        <mat-error>{{errorMessage()}}</mat-error>
+        }
+      </mat-form-field>
+      <mat-form-field *ngIf="register">
+        <mat-label>Telefono</mat-label>
+        <input matInput placeholder="Tu telefono" [formControl]="telefono" (blur)="updateErrorMessage()" maxlength="12"
+          minlength="8" required />
+        @if (mail.invalid) {
+        <mat-error>{{errorMessage()}}</mat-error>
+        }
       </mat-form-field>
       <div class="button-row">
         <button mat-flat-button>{{register ? 'Registrase' : "Login"}}</button>
@@ -50,8 +73,8 @@
     </tr>
   </thead>
   <tbody>
+    @for (user of userList; track $index) {
     <tr>
-      @for (user of userList; track $index) {
       <th scope="row">{{$index + 1}}</th>
       <td>{{user.name}}</td>
       <td>{{user.lastName}}</td>
@@ -60,8 +83,8 @@
       <td>{{user.rol === 1 ? 'Administrador' : 'Empleado'}}</td>
       <td>{{user.dni}}</td>
       <td>{{user.phone}}</td>
-      }
     </tr>
+    }
   </tbody>
 </table>
 }

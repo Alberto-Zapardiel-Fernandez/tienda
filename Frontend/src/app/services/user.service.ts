@@ -8,6 +8,7 @@ import { HttpHeaders } from '@angular/common/http';
 })
 export class UserService {
   API_URL: String = 'http://localhost:8080/v1/api/';
+  response: any;
   constructor(private httpClient: HttpClient) {}
 
   getUsers(endpoint: String): Observable<any> {
@@ -28,7 +29,23 @@ export class UserService {
       .pipe((res) => res);
   }
 
-  setUser() {
-    // TODO Implementar el código para guardar el usuario
+  //Método para hacer el set user con los datos enviados
+  setUser(
+    endpoint: string,
+    userData: {
+      name: string;
+      lastName: string;
+      email: string;
+      pass: string;
+      rol: number;
+      dni: string;
+      phone: string;
+    }
+  ): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = JSON.stringify(userData);
+    return this.httpClient.post<any>(this.API_URL + endpoint, body, {
+      headers,
+    }); // Devuelve la promesa para controlar la ejecución del subscribe
   }
 }
