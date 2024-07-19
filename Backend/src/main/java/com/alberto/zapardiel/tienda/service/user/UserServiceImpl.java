@@ -130,18 +130,22 @@ public class UserServiceImpl implements UserService {
      * @return the user
      */
     public User findByEmailAndPass(String email, String pass) {
-        User user = userRepository.findByEmail(email.trim().toLowerCase());
-        if (user != null) {
-            if (Boolean.TRUE.equals(cryptoService.matchPass(pass.trim().toUpperCase(), user.getPass()))) {
-                log.info("Match");
-                return userRepository.findByEmailAndPass(email, user.getPass());
+        List<User> users = userRepository.findByEmail(email.trim().toLowerCase());
+        User u = new User();
+        for(User user : users){
+            if (user != null) {
+                if (Boolean.TRUE.equals(cryptoService.matchPass(pass.trim().toUpperCase(), user.getPass()))) {
+                    log.info("Match");
+                    u= userRepository.findByEmailAndPass(email, user.getPass());
+                    break;
+                } else {
+                    log.info("No match");
+                }
             } else {
-                log.info("No match");
-                return new User();
+                log.info("Email not found");
+                u = User.builder().id(-1).build();
             }
-        } else {
-            log.info("Email not found");
-            return User.builder().id(-1).build();
         }
+        return u;
     }
 }

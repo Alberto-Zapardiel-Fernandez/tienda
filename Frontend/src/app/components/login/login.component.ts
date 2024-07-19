@@ -12,7 +12,8 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
-import { Observable } from 'rxjs';
+
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -59,7 +60,7 @@ export class LoginComponent implements OnInit {
   register: boolean = false;
   prueba: any;
 
-  constructor(private userService: UserService) {}
+  constructor(private userService: UserService, private router: Router) {}
   ngOnInit(): void {
     this.getUsers();
   }
@@ -143,8 +144,9 @@ export class LoginComponent implements OnInit {
         next: (response) => {
           // Maneja el inicio de sesión exitoso
           console.log('Usuario creado con éxito:', response);
-          // Puedes almacenar los datos de la respuesta (por ejemplo, token) para uso posterior
-          // Puedes redirigir a un componente diferente (por ejemplo, panel de control)
+          const dataToSend = response;
+          // Redirigir a PrincipalComponent
+          this.router.navigate(['/principal'], { queryParams: dataToSend });
         },
         error: (error) => {
           // Maneja el error de inicio de sesión
@@ -158,7 +160,11 @@ export class LoginComponent implements OnInit {
     this.userService.getUser('user/byEmailAndPass', { email, pass }).subscribe({
       next: (result) => {
         console.log(result === 1 ? 'Encontrado' : 'No encontrado');
+        console.log(result);
         //TODO Ver el checkbox para guardar en el storage y tirar adelante
+        const dataToSend = result;
+        // Redirigir a PrincipalComponent
+        this.router.navigate(['/principal'], { queryParams: dataToSend });
       },
       error: (err) => {
         console.error('Error:', err);
