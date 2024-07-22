@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { CookieService } from 'ngx-cookie-service';
 
 @Component({
   selector: 'app-principal',
@@ -9,13 +9,10 @@ import { ActivatedRoute } from '@angular/router';
   styleUrl: './principal.component.css',
 })
 export class PrincipalComponent implements OnInit {
-  dataFromMyComponent: any;
-
-  constructor(private activatedRoute: ActivatedRoute) {}
+  constructor(private cookieService: CookieService) {}
+  user: any;
   ngOnInit(): void {
-    this.activatedRoute.queryParams.subscribe((params) => {
-      this.dataFromMyComponent = params;
-      console.log('Data from Previous Component:', this.dataFromMyComponent);
-    });
+    this.user = JSON.parse(this.cookieService.get('user'));
+    console.log(this.user);
   }
 }

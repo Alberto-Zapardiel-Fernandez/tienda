@@ -16,10 +16,7 @@
             "outputPath": "dist/tienda",
             "index": "src/index.html",
             "browser": "src/main.ts",
-            "polyfills": [
-              "node_modules/zone.js/dist/zone.js",
-              "src/localize-init.js"
-            ],
+            "polyfills": ["zone.js"],
             "tsConfig": "tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
