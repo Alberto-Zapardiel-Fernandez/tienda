@@ -12,6 +12,7 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { CookieService } from 'ngx-cookie-service';
 
 import { Router } from '@angular/router';
 
@@ -60,14 +61,17 @@ export class LoginComponent implements OnInit {
   register: boolean = false;
   prueba: any;
 
-  constructor(private userService: UserService, private router: Router) {}
+  constructor(
+    private userService: UserService,
+    private router: Router,
+    private cookieService: CookieService
+  ) {}
   ngOnInit(): void {
     this.getUsers();
   }
   toogleRegister(event: MouseEvent): void {
     event.preventDefault();
     this.register = this.register == false ? true : false;
-    console.log(this.register);
     this.nombreValue = '';
     this.apellidosValue = '';
     this.dniValue = '';
@@ -141,12 +145,13 @@ export class LoginComponent implements OnInit {
         phone,
       })
       .subscribe({
-        next: (response) => {
+        next: (result) => {
           // Maneja el inicio de sesión exitoso
-          console.log('Usuario creado con éxito:', response);
-          const dataToSend = response;
+          console.log('Usuario creado con éxito:', result);
+          const usuario: UserInterface = this.setUserData(result);
+          this.cookieService.set('user', JSON.stringify(usuario));
           // Redirigir a PrincipalComponent
-          this.router.navigate(['/principal'], { queryParams: dataToSend });
+          this.router.navigate(['/principal']);
         },
         error: (error) => {
           // Maneja el error de inicio de sesión
@@ -159,18 +164,33 @@ export class LoginComponent implements OnInit {
   getUser(email: string, pass: string) {
     this.userService.getUser('user/byEmailAndPass', { email, pass }).subscribe({
       next: (result) => {
-        console.log(result === 1 ? 'Encontrado' : 'No encontrado');
         console.log(result);
-        //TODO Ver el checkbox para guardar en el storage y tirar adelante
-        const dataToSend = result;
-        // Redirigir a PrincipalComponent
-        this.router.navigate(['/principal'], { queryParams: dataToSend });
+        if (result.id != null) {
+          const usuario: UserInterface = this.setUserData(result);
+          this.cookieService.set('user', JSON.stringify(usuario));
+          this.router.navigate(['/principal']);
+        } else {
+          this.errorMessage.set('Usuario o contraseña incorrectos');
+        }
       },
       error: (err) => {
         console.error('Error:', err);
       },
     });
   }
+  private setUserData(result: any): UserInterface {
+    return {
+      id: result.id,
+      name: result.name,
+      lastName: result.lastName,
+      email: result.email,
+      pass: '',
+      rol: result.rol,
+      dni: result.dni,
+      phone: result.dni,
+    };
+  }
+
   //Método para validar el login del usuario
   validar(): boolean {
     if (this.email === '' || this.pass === '') {

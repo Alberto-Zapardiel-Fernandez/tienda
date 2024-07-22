@@ -24,9 +24,11 @@ export class UserService {
     const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
     const body = JSON.stringify(userData); // Convierte el objeto a JSON
 
-    return this.httpClient.post<any>(this.API_URL + endpoint, body, {
-      headers,
-    });
+    return this.httpClient
+      .post<any>(this.API_URL + endpoint, body, {
+        headers,
+      })
+      .pipe((res) => res);
   }
 
   //Método para hacer el set user con los datos enviados

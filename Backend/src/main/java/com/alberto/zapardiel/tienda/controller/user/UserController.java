@@ -112,10 +112,10 @@ public class UserController {
      * @return the user
      */
     @PostMapping("/user/byEmailAndPass")
-    public ResponseEntity<Integer> getUserByEmailAndPass(@RequestBody UserLoginDTO userLoginDTO) {
+    public ResponseEntity<User> getUserByEmailAndPass(@RequestBody UserLoginDTO userLoginDTO) {
         User user = userService.findByEmailAndPass(userLoginDTO.getEmail(),userLoginDTO.getPass());
         if (user != null && user.getName()!=null) {
-            return new ResponseEntity<>(1, HttpStatus.OK);
+            return new ResponseEntity<>(user, HttpStatus.OK);
         } else {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
