@@ -1,0 +1,19 @@
+.btn-vertical {
+  position: relative;
+  display: inline-block;
+  padding: 1rem;
+  min-width: 10rem;
+  max-width: 10rem;
+  min-height: 16rem;
+  max-height: 24rem;
+  box-sizing: border-box;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+  box-shadow: 5px 15px 20px rgba(0, 0, 0, 0.952);
+  background-color: var(--red-spain-color);
+  color: var(--yellow-spain-color);
+  font-size: 20px;
+}
+
+.btn-vertical:hover {
+  transform: scale(1.1);
+}
