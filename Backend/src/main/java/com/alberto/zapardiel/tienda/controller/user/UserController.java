@@ -141,9 +141,9 @@ public class UserController {
      * @return the user
      */
     @PutMapping("/user")
-    public ResponseEntity<Object> updateUser(@RequestBody User user, @RequestParam String dni) {
+    public ResponseEntity<Object> updateUser(@RequestBody User user) {
         try {
-            return ResponseEntity.ok(userService.updateUser(user,dni));
+            return ResponseEntity.ok(userService.updateUser(user));
         } catch (Exception e) {
             String errorMessage = "Error creating user";
             if (e instanceof DataIntegrityViolationException) {
