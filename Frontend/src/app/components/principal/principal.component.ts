@@ -21,7 +21,7 @@ export class PrincipalComponent implements OnInit {
   irA(numero: number) {
     switch (numero) {
       case 1:
-        this.router.navigate(['/principal']);
+        this.router.navigate(['/login/1']);
         break;
       case 2:
         this.router.navigate(['/principal']);
