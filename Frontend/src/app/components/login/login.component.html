@@ -1,21 +1,24 @@
 <div>
-  <h2>Login</h2>
+  <h2>{{ register ? 'Registrar' : update ? 'Actualizar' : 'Login' }}</h2>
   <div class="example-container">
     <form (ngSubmit)="login()">
-      <mat-form-field *ngIf="register">
+      <!--NOMBRE-->
+      <mat-form-field *ngIf="register || update">
         <mat-label>Nombre</mat-label>
         <input matInput placeholder="Tu nombre" [formControl]="nombre" (blur)="updateErrorMessage()" required />
         @if (mail.invalid) {
         <mat-error>{{errorMessage()}}</mat-error>
         }
       </mat-form-field>
-      <mat-form-field *ngIf="register">
+      <!--APELLIDOS-->
+      <mat-form-field *ngIf="register || update">
         <mat-label>Apellidos</mat-label>
         <input matInput placeholder="Tus apellidos" [formControl]="apellidos" (blur)="updateErrorMessage()" required />
         @if (mail.invalid) {
         <mat-error>{{errorMessage()}}</mat-error>
         }
       </mat-form-field>
+      <!--EMAIL-->
       <mat-form-field>
         <mat-label>Introduce tu email</mat-label>
         <input matInput placeholder="pat@example.com" [formControl]="mail" (blur)="updateErrorMessage()" required />
@@ -23,7 +26,7 @@
         <mat-error>{{errorMessage()}}</mat-error>
         }
       </mat-form-field>
-      <br>
+      <!--CONTRASEÑA-->
       <mat-form-field>
         <mat-label>Introduce tu contraseña</mat-label>
         <input [formControl]="password" matInput [type]="hide() ? 'password' : 'text'" />
@@ -32,6 +35,7 @@
           <mat-icon>{{hide() ? 'visibility_off' : 'visibility'}}</mat-icon>
         </button>
       </mat-form-field>
+      <!--DNI-->
       <mat-form-field *ngIf="register">
         <mat-label>DNI</mat-label>
         <input matInput placeholder="Tu dni" [formControl]="dni" minlength="9" maxlength="9"
@@ -40,7 +44,24 @@
         <mat-error>{{errorMessage()}}</mat-error>
         }
       </mat-form-field>
-      <mat-form-field *ngIf="register">
+      <mat-form-field *ngIf="update">
+        <mat-label>DNI</mat-label>
+        <mat-select [(value)]="dniValue" [formControl]="dni">
+          <mat-option *ngFor="let user of userList" [value]="user.dni">
+            {{ user.dni }}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!--ROL-->
+      <mat-form-field *ngIf="update">
+        <mat-label>Rol</mat-label>
+        <mat-select [(value)]="rolValue" [formControl]="rol">
+          <mat-option value="1"> Administrador </mat-option>
+          <mat-option value="0"> Empleado </mat-option>
+        </mat-select>
+      </mat-form-field>
+      <!--TELEFONO-->
+      <mat-form-field *ngIf="register || update">
         <mat-label>Telefono</mat-label>
         <input matInput placeholder="Tu telefono" [formControl]="telefono" (blur)="updateErrorMessage()" maxlength="12"
           minlength="8" required />
@@ -48,9 +69,12 @@
         <mat-error>{{errorMessage()}}</mat-error>
         }
       </mat-form-field>
+      <!--BOTONES-->
       <div class="button-row">
-        <button mat-flat-button>{{register ? 'Registrase' : "Login"}}</button>
-        <button (click)="toogleRegister($event)" mat-flat-button>{{register ? 'Volver' : "Registrarse"}}</button>
+        <button mat-flat-button>{{ register ? 'Registrar' : update ? 'Actualizar' : 'Login' }}</button>
+        <button (click)="toogleRegister($event)" mat-flat-button>{{ register ? 'Volver' : update ? 'Volver' :
+          'Registrar'
+          }}</button>
       </div>
     </form>
   </div>

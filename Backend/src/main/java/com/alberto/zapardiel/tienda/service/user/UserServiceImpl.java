@@ -71,13 +71,12 @@ public class UserServiceImpl implements UserService {
     /**
      * Method to update a user
      *
-     * @param dni the dni
      * @param user the user
      * @return the user updated
      */
     @Override
-    public User updateUser(User user, String dni) {
-        User userUpdated = userRepository.findByDni(dni.trim());
+    public User updateUser(User user) {
+        User userUpdated = userRepository.findByDni(user.getDni().trim());
         if (Objects.nonNull(userUpdated)) {
             userUpdated.setName(Utils.capitalize(user.getName()));
             userUpdated.setLastName(user.getLastName());

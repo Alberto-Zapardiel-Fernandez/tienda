@@ -1,7 +1,6 @@
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
-import { HttpHeaders } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root',
@@ -49,5 +48,25 @@ export class UserService {
     return this.httpClient.post<any>(this.API_URL + endpoint, body, {
       headers,
     }); // Devuelve la promesa para controlar la ejecución del subscribe
+  }
+
+  updateUser(
+    endpoint: string,
+    dni: string,
+    user: {
+      name: string;
+      lastName: string;
+      email: string;
+      pass: string;
+      rol: number;
+      dni: string;
+      phone: string;
+    }
+  ): Observable<any> {
+    const headers = new HttpHeaders({ 'Content-Type': 'application/json' });
+    const body = JSON.stringify(user); // Convierte el objeto a JSON
+    return this.httpClient.put<any>(`${this.API_URL}${endpoint}`, body, {
+      headers,
+    });
   }
 }

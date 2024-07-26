@@ -12,9 +12,10 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatIconModule } from '@angular/material/icon';
 import { MatButtonModule } from '@angular/material/button';
+import { MatSelectModule } from '@angular/material/select';
 import { CookieService } from 'ngx-cookie-service';
 
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -28,6 +29,7 @@ import { Router } from '@angular/router';
     MatButtonModule,
     FormsModule,
     ReactiveFormsModule,
+    MatSelectModule,
   ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css'],
@@ -38,6 +40,7 @@ export class LoginComponent implements OnInit {
   readonly password = new FormControl('', [Validators.required]);
   readonly nombre = new FormControl('', [Validators.required]);
   readonly apellidos = new FormControl('', [Validators.required]);
+  readonly rol = new FormControl('', [Validators.required]);
   readonly dni = new FormControl('', [
     Validators.required,
     Validators.maxLength(9),
@@ -51,27 +54,44 @@ export class LoginComponent implements OnInit {
   errorMessage = signal('');
   hide = signal(true);
   check: boolean = false;
+  update: boolean = false;
   validacion: boolean = false;
   email: string = '';
   pass: string = '';
   nombreValue: string = '';
   apellidosValue: string = '';
   dniValue: string = '';
+  rolValue: string = '0';
   telefonoValue: string = '';
   register: boolean = false;
   prueba: any;
+  id: string = '';
 
   constructor(
     private userService: UserService,
     private router: Router,
+    private route: ActivatedRoute,
     private cookieService: CookieService
   ) {}
   ngOnInit(): void {
+    //Al entrar, si vengo para hacer el update borro la cookie
+    if (this.update) {
+      this.cookieService.delete('user');
+    }
+    //Obtengo los usuarios
     this.getUsers();
+    //Miro a ver si vengo con parámetro, si vengo es porque vengo a actualizar usuario
+    this.route.params.subscribe((params) => {
+      this.id = params['id'];
+      if (this.id == '1') {
+        this.update = true;
+      }
+    });
   }
   toogleRegister(event: MouseEvent): void {
     event.preventDefault();
     this.register = this.register == false ? true : false;
+    this.router.navigate(['/login']);
     this.nombreValue = '';
     this.apellidosValue = '';
     this.dniValue = '';
@@ -99,17 +119,34 @@ export class LoginComponent implements OnInit {
     this.email = this.mail.value == null ? '' : this.mail.value;
     this.pass = this.password.value == null ? '' : this.password.value;
     //Si vamos a registrar, guardamos los valores que hay puestos
-    if (this.register) {
+    if (this.register || this.update) {
       this.nombreValue = this.nombre.value == null ? '' : this.nombre.value;
       this.apellidosValue =
         this.apellidos.value == null ? '' : this.apellidos.value;
       this.dniValue = this.dni.value == null ? '' : this.dni.value;
       this.telefonoValue =
         this.telefono.value == null ? '' : this.telefono.value;
+      if (!this.register || this.update) {
+        this.rolValue = this.rol.value == null ? '' : this.rol.value;
+      }
     }
     // Validación de los datos
     this.validacion = this.validar();
     if (this.validacion) {
+      if (this.update) {
+        this.updateUser(
+          this.nombreValue,
+          this.apellidosValue,
+          this.email,
+          this.pass,
+          this.rolValue,
+          this.dniValue,
+          this.telefonoValue
+        );
+        // Redirigir a PrincipalComponent
+        this.router.navigate(['/login']);
+        return;
+      }
       // Código para el login o registro
       !this.register
         ? this.getUser(this.email, this.pass)
@@ -123,6 +160,42 @@ export class LoginComponent implements OnInit {
             this.telefonoValue
           );
     }
+  }
+  updateUser(
+    name: string,
+    lastName: string,
+    email: string,
+    pass: string,
+    rol: string,
+    dni: string,
+    phone: string
+  ) {
+    console.log(rol);
+    this.userService
+      .updateUser('user', dni, {
+        name: name,
+        lastName: lastName,
+        email: email,
+        pass: pass,
+        rol: parseInt(rol),
+        dni: dni,
+        phone: phone,
+      })
+      .subscribe({
+        next: (result) => {
+          // Maneja el inicio de sesión exitoso
+          console.log('Usuario actualizado con éxito:', result);
+          const usuario: UserInterface = this.setUserData(result);
+          this.cookieService.delete('user');
+          this.cookieService.set('user', JSON.stringify(usuario));
+          // Redirigir a PrincipalComponent
+        },
+        error: (error) => {
+          // Maneja el error de inicio de sesión
+          console.error('Error al actualizar el usuario:', error);
+          // Puedes mostrar un mensaje de error al usuario
+        },
+      });
   }
 
   setUser(
@@ -149,6 +222,7 @@ export class LoginComponent implements OnInit {
           // Maneja el inicio de sesión exitoso
           console.log('Usuario creado con éxito:', result);
           const usuario: UserInterface = this.setUserData(result);
+          this.cookieService.delete('user');
           this.cookieService.set('user', JSON.stringify(usuario));
           // Redirigir a PrincipalComponent
           this.router.navigate(['/principal']);
@@ -167,6 +241,7 @@ export class LoginComponent implements OnInit {
         console.log(result);
         if (result.id != null) {
           const usuario: UserInterface = this.setUserData(result);
+          this.cookieService.delete('user');
           this.cookieService.set('user', JSON.stringify(usuario));
           this.router.navigate(['/principal']);
         } else {

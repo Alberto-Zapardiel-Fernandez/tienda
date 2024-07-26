@@ -1,1 +1,13 @@
-<h1>Bienvenido {{user.name}} {{user.lastName}}</h1>
+<h1 class="text-center p-5">Bienvenido {{user.name}} {{user.lastName}}</h1>
+<div class="container">
+  <div class="container d-flex flex-wrap justify-content-center gap-4">
+    @if (user.rol == 1) {
+    <button (click)="irA(1)" class="btn mt-4 btn-vertical">Modificar Usuarios</button>
+    }
+    <button (click)="irA(2)" class="btn mt-4 btn-vertical">Botón 2</button>
+    <button (click)="irA(3)" class="btn mt-4 btn-vertical">Botón 3</button>
+    <button (click)="irA(4)" class="btn mt-4 btn-vertical">Botón 4</button>
+    <button (click)="irA(5)" class="btn mt-4 btn-vertical">Botón 5</button>
+    <button (click)="irA(6)" class="btn mt-4 btn-vertical">Volver a login</button>
+  </div>
+</div>
