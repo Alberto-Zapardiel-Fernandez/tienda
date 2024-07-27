@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 
@@ -52,7 +52,6 @@ export class UserService {
 
   updateUser(
     endpoint: string,
-    dni: string,
     user: {
       name: string;
       lastName: string;
@@ -67,6 +66,12 @@ export class UserService {
     const body = JSON.stringify(user); // Convierte el objeto a JSON
     return this.httpClient.put<any>(`${this.API_URL}${endpoint}`, body, {
       headers,
+    });
+  }
+  deleteUser(endpoint: string, id: string) {
+    const params = new HttpParams().set('id', id);
+    return this.httpClient.delete<any>(`${this.API_URL}${endpoint}`, {
+      params,
     });
   }
 }
