@@ -24,7 +24,7 @@ export class PrincipalComponent implements OnInit {
         this.router.navigate(['/login/1']);
         break;
       case 2:
-        this.router.navigate(['/principal']);
+        this.router.navigate(['/user-list']);
         break;
       case 3:
         this.router.navigate(['/principal']);
@@ -36,7 +36,7 @@ export class PrincipalComponent implements OnInit {
         this.router.navigate(['/principal']);
         break;
       case 6:
-        this.router.navigate(['/login']);
+        this.router.navigate(['/login/2']);
         break;
       default:
         this.router.navigate(['/principal']); // Por defecto, ir a la página 1 si el número introducido no es válido.

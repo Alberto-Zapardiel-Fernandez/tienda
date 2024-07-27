@@ -66,6 +66,7 @@ export class LoginComponent implements OnInit {
   register: boolean = false;
   prueba: any;
   id: string = '';
+  user: any;
 
   constructor(
     private userService: UserService,
@@ -74,12 +75,6 @@ export class LoginComponent implements OnInit {
     private cookieService: CookieService
   ) {}
   ngOnInit(): void {
-    //Al entrar, si vengo para hacer el update borro la cookie
-    if (this.update) {
-      this.cookieService.delete('user');
-    }
-    //Obtengo los usuarios
-    this.getUsers();
     //Miro a ver si vengo con parámetro, si vengo es porque vengo a actualizar usuario
     this.route.params.subscribe((params) => {
       this.id = params['id'];
@@ -87,6 +82,19 @@ export class LoginComponent implements OnInit {
         this.update = true;
       }
     });
+    this.user = this.cookieService.get('user');
+    if (this.user == '') {
+      console.log('Vacio');
+    } else if (this.id != '1' && this.id != '2') {
+      this.user = JSON.parse(this.user);
+      this.router.navigate(['/principal']);
+    }
+    //Al entrar, si vengo para hacer el update borro la cookie
+    if (this.update) {
+      this.cookieService.delete('user');
+    }
+    //Obtengo los usuarios
+    this.getUsers();
   }
   toogleRegister(event: MouseEvent): void {
     event.preventDefault();
@@ -172,7 +180,7 @@ export class LoginComponent implements OnInit {
   ) {
     console.log(rol);
     this.userService
-      .updateUser('user', dni, {
+      .updateUser('user', {
         name: name,
         lastName: lastName,
         email: email,
