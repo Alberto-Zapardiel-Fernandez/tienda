@@ -1,7 +1,6 @@
 package com.alberto.zapardiel.tienda.controller.client;
 
 import com.alberto.zapardiel.tienda.model.Client;
-import com.alberto.zapardiel.tienda.model.User;
 import com.alberto.zapardiel.tienda.service.client.ClientService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
