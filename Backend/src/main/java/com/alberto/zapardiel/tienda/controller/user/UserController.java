@@ -5,6 +5,7 @@ import com.alberto.zapardiel.tienda.model.User;
 import com.alberto.zapardiel.tienda.service.user.UserService;
 import com.alberto.zapardiel.tienda.utils.Utils;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -30,7 +31,8 @@ import java.util.Optional;
 @RestController
 @RequestMapping("/v1/api")
 @AllArgsConstructor
-@CrossOrigin(origins = "http://localhost:4200")
+@Slf4j
+@CrossOrigin(origins = "*")
 public class UserController {
 
     /**
@@ -123,16 +125,16 @@ public class UserController {
 
     /**
      * End point to find the user, if exists, delete it
-     * @param dni the dni
+     * @param id the id
      * @return the user
      */
     @DeleteMapping("/user")
-    public ResponseEntity<Integer> deleteByDni(@RequestParam String dni) {
-        User user = userService.findByDni(dni.trim());
-        if (user != null) {
-            userService.deleteUserById(Long.parseLong(String.valueOf(user.getId())));
+    public ResponseEntity<Integer> deleteById(@RequestParam int id) {
+        try {
+            userService.deleteUserById((long) id);
             return new ResponseEntity<>(1, HttpStatus.OK);
-        } else {
+        } catch(Exception e) {
+            log.error(e.getMessage());
             return new ResponseEntity<>(0,HttpStatus.OK);
         }
     }
