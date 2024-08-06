@@ -178,7 +178,6 @@ export class LoginComponent implements OnInit {
     dni: string,
     phone: string
   ) {
-    console.log(rol);
     this.userService
       .updateUser('user', {
         name: name,
