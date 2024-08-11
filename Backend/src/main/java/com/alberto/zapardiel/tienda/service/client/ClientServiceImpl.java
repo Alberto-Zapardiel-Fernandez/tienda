@@ -103,7 +103,7 @@ public class ClientServiceImpl implements ClientService{
      */
     @Override
     public Object updateClient(Client client) {
-        Client clientUpdated = clientRepository.findById(client.getId());
+        Client clientUpdated = clientRepository.findByDni(client.getDni());
         if (clientUpdated != null){
             clientUpdated.setDni(client.getDni() != null ? client.getDni() : null);
             clientUpdated.setName(client.getName() != null ? client.getName() : null);
