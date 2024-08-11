@@ -178,7 +178,6 @@ export class LoginComponent implements OnInit {
     dni: string,
     phone: string
   ) {
-    console.log(rol);
     this.userService
       .updateUser('user', {
         name: name,
@@ -231,6 +230,7 @@ export class LoginComponent implements OnInit {
           console.log('Usuario creado con éxito:', result);
           const usuario: UserInterface = this.setUserData(result);
           this.cookieService.delete('user');
+          //Borramos la cookie si la hubiera para guardar el nuevo user, entonces reedirigimos
           this.cookieService.set('user', JSON.stringify(usuario));
           // Redirigir a PrincipalComponent
           this.router.navigate(['/principal']);
@@ -303,5 +303,10 @@ export class LoginComponent implements OnInit {
         console.error('Error:', err);
       },
     });
+  }
+
+  verUsuarios() {
+    this.getUsers();
+    this.router.navigate(['/user-list']);
   }
 }

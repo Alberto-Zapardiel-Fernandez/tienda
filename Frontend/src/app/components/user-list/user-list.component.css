@@ -11,3 +11,37 @@ th.mat-sort-header-sorted {
   cursor: pointer;
   background-color: var(--secondary-bg-color);
 }
+
+h2 {
+  text-align: center;
+}
+
+.example-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.button-row {
+  display: flex;
+  justify-content: space-around;
+  flex-direction: row;
+  gap: 4%;
+}
+
+div {
+  padding: 3%;
+}
+
+.form-check {
+  margin-left: 6%;
+}
+
+mat-form-field {
+  width: 100%;
+}
+
+.boton-esconder {
+  margin-right: 10px;
+}

@@ -78,6 +78,11 @@
       </div>
     </form>
   </div>
+  @if (update) {
+  <div class="mt-0 d-flex">
+    <button class="mx-auto btn btn-primary" (click)="verUsuarios()">Ver usuarios</button>
+  </div>
+  }
 </div>
 <!--Si no hay usuarios saco que no hay, si los hay saco la tabla-->
 @if (userList == null) {
