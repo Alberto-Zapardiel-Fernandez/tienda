@@ -89,6 +89,6 @@ export class UserListComponent implements OnInit {
   }
 
   volver() {
-    this.router.navigate(['principal']);
+    this.router.navigate(['login/1']);
   }
 }

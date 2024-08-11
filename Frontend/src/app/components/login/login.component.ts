@@ -304,4 +304,9 @@ export class LoginComponent implements OnInit {
       },
     });
   }
+
+  verUsuarios() {
+    this.getUsers();
+    this.router.navigate(['/user-list']);
+  }
 }

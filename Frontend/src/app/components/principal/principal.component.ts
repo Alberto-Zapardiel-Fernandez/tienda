@@ -24,10 +24,10 @@ export class PrincipalComponent implements OnInit {
         this.router.navigate(['/login/1']);
         break;
       case 2:
-        this.router.navigate(['/user-list']);
+        this.router.navigate(['/client']);
         break;
       case 3:
-        this.router.navigate(['/client']);
+        this.router.navigate(['/principal']);
         break;
       case 4:
         this.router.navigate(['/principal']);
