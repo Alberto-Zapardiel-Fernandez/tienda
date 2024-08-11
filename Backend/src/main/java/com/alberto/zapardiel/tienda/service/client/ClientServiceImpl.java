@@ -111,7 +111,7 @@ public class ClientServiceImpl implements ClientService{
             clientUpdated.setPhone(client.getPhone() != null ? client.getPhone() : null);
             clientUpdated.setEmail(client.getEmail() != null ? client.getEmail() : null);
             clientUpdated.setDirection(client.getDirection() != null ? client.getDirection() : null);
-            clientUpdated.setDiscount(client.getDiscount() != null ? client.getDiscount() : null);
+            clientUpdated.setDiscount(client.getDiscount());
             return clientRepository.save(clientUpdated);
         }else{
             return Client.builder().id(-1).build();
