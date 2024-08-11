@@ -230,6 +230,7 @@ export class LoginComponent implements OnInit {
           console.log('Usuario creado con éxito:', result);
           const usuario: UserInterface = this.setUserData(result);
           this.cookieService.delete('user');
+          //Borramos la cookie si la hubiera para guardar el nuevo user, entonces reedirigimos
           this.cookieService.set('user', JSON.stringify(usuario));
           // Redirigir a PrincipalComponent
           this.router.navigate(['/principal']);

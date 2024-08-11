@@ -142,11 +142,106 @@ export class ClientComponent implements OnInit {
   }
 
   //Metodo para crear o hacer update del cliente
-  createOrUpdateClient() {}
+  createOrUpdateClient() {
+    let nombreValue = this.nombre.value == null ? '' : this.nombre.value;
+    let apellidosValue =
+      this.apellidos.value == null ? '' : this.apellidos.value;
+    let direccionValue =
+      this.direccion.value == null ? '' : this.direccion.value;
+    let mailValue = this.mail.value == null ? '' : this.mail.value;
+    let dniValue = this.dni.value == null ? '' : this.dni.value;
+    let telefonoValue = this.telefono.value == null ? '' : this.telefono.value;
+    let discountValue = this.descuento.value == null ? 0 : this.descuento.value;
+    if (this.register) {
+      this.setClient(
+        nombreValue,
+        apellidosValue,
+        mailValue,
+        direccionValue,
+        dniValue,
+        telefonoValue,
+        discountValue
+      );
+    } else if (this.update) {
+      this.updateClient(
+        nombreValue,
+        apellidosValue,
+        mailValue,
+        direccionValue,
+        dniValue,
+        telefonoValue,
+        discountValue
+      );
+    } else {
+      this.errorMessage.set('Debes seleccionar una acción');
+    }
+  }
   //Método para crear el cliente
-  setClient() {}
+  setClient(
+    name: string,
+    lastName: string,
+    email: string,
+    direction: string,
+    dni: string,
+    phone: string,
+    discount: number
+  ) {
+    this.clientService
+      .setClient('client', {
+        name,
+        lastName,
+        email,
+        direction,
+        dni,
+        phone,
+        discount,
+      })
+      .subscribe({
+        next: (result) => {
+          console.log('Cliente creado con éxito ', result);
+          this.router.navigate(['principal']);
+        },
+        error: (err) => {
+          console.error('Error al insertar:', err);
+        },
+        complete: () => {
+          this.validacion = true;
+        },
+      });
+  }
   //Método para hacer update del cliente
-  updateClient() {}
+  updateClient(
+    name: string,
+    lastName: string,
+    email: string,
+    direction: string,
+    dni: string,
+    phone: string,
+    discount: number
+  ) {
+    this.clientService
+      .updateClient('client', {
+        name,
+        lastName,
+        email,
+        direction,
+        dni,
+        phone,
+        discount,
+      })
+      .subscribe({
+        next: (result) => {
+          console.log('Cliente creado con éxito ', result);
+          this.router.navigate(['principal']);
+        },
+        error: (err) => {
+          console.error('Error al insertar:', err);
+        },
+        complete: () => {
+          this.validacion = true;
+        },
+      });
+  }
   toogleRegister(event: MouseEvent): void {
     event.preventDefault();
     this.register = this.register == false ? true : false;
@@ -172,6 +267,7 @@ export class ClientComponent implements OnInit {
   }
   //Método para hacer toogle de la vista de la lista de clientes
   verListaClientes() {
+    this.getClients();
     this.verClientes = this.verClientes == false ? true : false;
   }
 }

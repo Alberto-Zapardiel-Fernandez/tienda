@@ -97,7 +97,7 @@
       </mat-form-field>
       <!--EMAIL-->
       <mat-form-field>
-        <mat-label>Introduce tu email</mat-label>
+        <mat-label>Introduce el email</mat-label>
         <input matInput placeholder="pat@example.com" [formControl]="mail" (blur)="updateErrorMessage()" required />
         @if (mail.invalid) {
         <mat-error>{{errorMessage()}}</mat-error>
