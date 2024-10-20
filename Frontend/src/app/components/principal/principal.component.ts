@@ -27,7 +27,7 @@ export class PrincipalComponent implements OnInit {
         this.router.navigate(['/client']);
         break;
       case 3:
-        this.router.navigate(['/principal']);
+        this.router.navigate(['/product']);
         break;
       case 4:
         this.router.navigate(['/principal']);
