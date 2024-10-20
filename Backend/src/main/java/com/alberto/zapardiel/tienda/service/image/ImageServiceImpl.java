@@ -14,8 +14,9 @@ import java.util.UUID;
 
 /**
  * Image Service
+ *
  * @author Alberto Zapardiel Fernández
-*/
+ */
 @Service
 @AllArgsConstructor
 public class ImageServiceImpl {
@@ -24,22 +25,18 @@ public class ImageServiceImpl {
     private Environment env;
 
     public String uploadImage(MultipartFile file) throws IOException {
-        if(file != null) {
+        if (file != null) {
             // Generar un nombre único para el archivo
             String originalFilename = StringUtils.cleanPath(Objects.requireNonNull(file.getOriginalFilename()));
             String fileName = UUID.randomUUID() + "_" + originalFilename;
-
-            // Obtener la ruta completa de almacenamiento
-            String uploadDir = env.getProperty("upload.path");
-            assert uploadDir != null;
-            Path uploadPath = Paths.get(uploadDir, fileName);
-
-            // Guardar el archivo en el sistema de archivos
-            file.transferTo(uploadPath);
-
-            // Crear la URL de la imagen y devolvemos
-            return uploadDir + "/" + fileName;
-        }else{
+            // Obtener la ruta completa de almacenamiento (relativa al directorio de recursos estáticos)
+            String uploadDir = "images";
+            Path uploadPath = Paths.get(uploadDir, fileName);// Obtener la ruta absoluta al directorio de recursos estáticos
+            String uploadPathAbsolute = Paths.get(Objects.requireNonNull(env.getProperty("user.dir")), "src/main/resources/static").toString();// Combinar la ruta absoluta con la ruta relativa para obtener la ruta completa del archivo
+            Path targetLocation = Paths.get(uploadPathAbsolute, uploadPath.toString());// Guardar el archivo en el sistema de archivos
+            file.transferTo(targetLocation);// Crear la URL de la imagen y devolvemos
+            return "/images/" + fileName;
+        } else {
             return "";
         }
     }

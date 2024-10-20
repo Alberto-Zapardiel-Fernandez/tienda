@@ -4,6 +4,12 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 application.properties
+# Ignorar todos los archivos con extensiones de imagen comunes
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
 
 ### STS ###
 .apt_generated

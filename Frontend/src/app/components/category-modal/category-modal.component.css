@@ -1,0 +1,79 @@
+/* Mat-dialog title */
+.mat-dialog-title {
+  font-weight: bold;
+  font-size: 1.5rem;
+  padding: 1rem;
+  text-align: center;
+  /* Center align the title */
+  color: #3f51b5;
+  /* Adjust color as needed */
+}
+
+/* Mat-form-field */
+mat-form-field {
+  width: 100%;
+  margin-top: 1rem;
+}
+
+.mat-form-field .mat-form-field-label {
+  font-weight: bold;
+  color: #673ab7;
+  /* Adjust color as needed */
+}
+
+.mat-form-field .mat-input-element {
+  padding: 1rem;
+  border-radius: 4px;
+  border: 1px solid #ddd;
+  font-size: 1rem;
+}
+
+/* Mat-dialog actions */
+.mat-dialog-actions {
+  display: flex;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.mat-dialog-actions button {
+  margin: 0.5rem;
+  border-radius: 4px;
+  padding: 0.8rem 1rem;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.mat-dialog-actions button.mat-button-base {
+  background-color: #e0e0e0;
+  /* Default button background */
+  color: #333;
+  /* Default button text color */
+}
+
+.mat-dialog-actions button.mat-button-base:hover {
+  background-color: #cccccc;
+  /* Button hover effect */
+}
+
+/* Focused button (assuming using reactive forms) */
+.mat-dialog-actions button.ng-dirty.ng-touched {
+  background-color: #ddd;
+  /* Focused button background */
+}
+
+/* Primary button (assuming using a click event to identify) */
+.mat-dialog-actions button[click="saveCategory()"] {
+  background-color: #4CAF50;
+  /* Verde */
+  color: white;
+}
+
+.mat-dialog-actions button[click="onNoClick()"] {
+  background-color: #f44336;
+  /* Rojo */
+  color: white;
+}
+
+.button-zone {
+  margin: 0 auto;
+}

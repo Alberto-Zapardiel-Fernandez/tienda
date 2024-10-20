@@ -1,0 +1,15 @@
+<h1 mat-dialog-title>Agregar Categoría</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="fill">
+    <mat-label>Nombre de la categoría</mat-label>
+    <input matInput [(ngModel)]="newCategory.name" placeholder="Ingrese el nombre de la categoría" required>
+  </mat-form-field>
+  <mat-form-field appearance="fill">
+    <mat-label>Descripción</mat-label>
+    <textarea matInput [(ngModel)]="newCategory.description" placeholder="Ingrese la descripción" required></textarea>
+  </mat-form-field>
+</div>
+<div mat-dialog-actions class="button-zone">
+  <button mat-raised-button color="primary" (click)="saveCategory()">Agregar</button>
+  <button mat-raised-button color="accent" (click)="onNoClick()">Cancelar</button>
+</div>

@@ -13,7 +13,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,6 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.List;
 
 /**
  * Product controller
@@ -33,6 +36,7 @@ import java.math.BigDecimal;
 @AllArgsConstructor
 @Slf4j
 @CrossOrigin(origins = "*")
+@Validated
 public class ProductController {
 
     /**
@@ -51,7 +55,7 @@ public class ProductController {
      */
     @PostMapping(value = "/product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> createProduct(
-            @RequestParam("image") MultipartFile image,
+            @RequestParam(value = "image", required = false) MultipartFile image,
             @NotBlank @Size(min = 3, max = 50) @RequestParam("name") String name,
             @NotBlank @Size(min = 10) @RequestParam("description") String description,
             @NotNull @Min(0) @RequestParam("price") BigDecimal price,
@@ -59,8 +63,13 @@ public class ProductController {
             @NotNull @Min(1) @RequestParam("idCategory") Integer idCategory) {
 
         String response;
+        String urlImage;
         try {
-            String urlImage = imageService.uploadImage(image);
+            if (image != null && !image.isEmpty()) {
+                urlImage = imageService.uploadImage(image);
+            } else {
+                urlImage = "src/main/java/com/alberto/zapardiel/tienda/images/default_image.jpg";
+            }
             Product product = Product.builder()
                     .name(name)
                     .description(description)
@@ -72,7 +81,7 @@ public class ProductController {
                             .build())
                     .build();
             response = productService.createProduct(product, urlImage);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (IOException e) {
             // Manejo de excepción más detallado
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading image: " + e.getMessage());
@@ -80,5 +89,17 @@ public class ProductController {
             // Manejo de otras excepciones
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating product: " + e.getMessage());
         }
+    }
+
+    /**
+     * Endpoint to get All products
+     *
+     * @return a list of products
+     */
+    @GetMapping(value = "/products")
+    public ResponseEntity<List<Product>> getAllProducts() {
+        List<Product> products = productService.getAllProducts();
+        return ResponseEntity.ok(products);
+
     }
 }
