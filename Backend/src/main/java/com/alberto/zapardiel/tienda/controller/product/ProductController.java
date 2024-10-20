@@ -81,7 +81,7 @@ public class ProductController {
                             .build())
                     .build();
             response = productService.createProduct(product, urlImage);
-            return ResponseEntity.status(HttpStatus.CREATED).body(response);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
         } catch (IOException e) {
             // Manejo de excepción más detallado
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading image: " + e.getMessage());
