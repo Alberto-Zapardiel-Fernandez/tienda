@@ -12,6 +12,8 @@ import { MatDialog } from '@angular/material/dialog';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { ProductService } from '../../services/product.service';
+import { ProductInterface } from '../../interfaces/product-interface';
+import { SuccessModalComponent } from '../success-modal/success-modal.component';
 
 @Component({
   selector: 'app-product',
@@ -38,11 +40,13 @@ export class ProductComponent implements OnInit {
     image: new FormControl(''),
   });
   categories: CategoryInterface[] = [];
+  products: ProductInterface[] = [];
 
   constructor(
     private categoryService: CategoriesService,
     private productService: ProductService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    public successDialog: MatDialog
   ) {}
   ngOnInit() {
     // Obtener las categorías desde el servicio
@@ -80,6 +84,24 @@ export class ProductComponent implements OnInit {
   //Método para ver los productos y modificarlos
   verProductos() {
     console.log('Ver productos');
+    this.productService.getProducts('products').subscribe({
+      next: (result) => {
+        if (result.length > 0) {
+          result.forEach((element) => {
+            let url = `http://localhost:8080${element.imageUrl}`;
+            element.imageUrl = url;
+            console.log(url);
+          });
+          this.products = result;
+          console.log(result);
+        } else {
+          console.error('No se encontraron productos');
+        }
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      },
+    });
   }
 
   modificarProductos() {
@@ -101,8 +123,14 @@ export class ProductComponent implements OnInit {
           file
         )
         .subscribe({
-          next: (result) => {
-            console.log(result);
+          next: () => {
+            this.successDialog.open(SuccessModalComponent, {
+              width: '250px',
+              data: {
+                message: 'Agregado correctamente',
+              },
+            });
+            this.productForm.reset();
           },
           error: (err) => {
             console.error('Error:', err);
@@ -113,16 +141,20 @@ export class ProductComponent implements OnInit {
       this.productForm.reset();
     }
   }
-
   //Método para agregar una categoría a la base de datos
   public agregarCategoria() {
     const dialogRef = this.dialog.open(CategoryModalComponent);
 
     dialogRef.afterClosed().subscribe((result) => {
       this.categoryService.createCategory('category', result).subscribe({
-        next: (result2) => {
-          console.log(result2);
+        next: () => {
           this.getCategories();
+          this.successDialog.open(SuccessModalComponent, {
+            width: '250px',
+            data: {
+              message: 'Nueva categoría agregada correctamente',
+            },
+          });
         },
         error: (err) => {
           console.error('Error:', err);

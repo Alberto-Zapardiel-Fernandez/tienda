@@ -23,7 +23,7 @@ import { FormsModule } from '@angular/forms';
   styleUrls: ['./category-modal.component.css'],
 })
 export class CategoryModalComponent {
-  public newCategory = { name: '', description: '' };
+  public newCategory = { name: null, description: null };
   constructor(
     public dialogRef: MatDialogRef<CategoryModalComponent>,
     @Inject(MAT_DIALOG_DATA) public data: any

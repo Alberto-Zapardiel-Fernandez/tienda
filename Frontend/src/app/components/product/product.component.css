@@ -134,3 +134,21 @@ button {
 .red {
   color: var(--red-spain-color);
 }
+
+.product-list {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  margin-top: 20px;
+}
+
+.product {
+  border: 1px solid #ccc;
+  padding: 20px;
+  width: 300px;
+  margin-bottom: 20px;
+}
+
+.product img {
+  max-width: 100%;
+}
