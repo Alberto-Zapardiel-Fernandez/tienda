@@ -6,6 +6,8 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Product service implementation
  *
@@ -37,4 +39,14 @@ public class ProductServiceImpl implements ProductService {
             return "Error " + e;
         }
     }
+
+    /**
+     * Method to get all products
+     *
+     * @return a list of products
+     */
+    public List<Product> getAllProducts() {
+        return productRepository.findAll();
+    }
+
 }

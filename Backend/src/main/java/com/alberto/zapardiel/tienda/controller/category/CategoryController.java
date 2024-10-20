@@ -24,6 +24,7 @@ import java.util.Optional;
 
 /**
  * Category controller
+ *
  * @author alberto zapardiel fernandez
  */
 @RestController
@@ -39,6 +40,7 @@ public class CategoryController {
 
     /**
      * End point to get the list of categories
+     *
      * @return the list of categories or a no content if is empty
      */
     @GetMapping(name = "getAllCategories", path = "/categories", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -49,13 +51,16 @@ public class CategoryController {
 
     /**
      * End point to create a new category
+     *
      * @param category the category data
      * @return the category inserted or a message with the error
      */
     @PostMapping(name = "createCategory", path = "/category", produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> createCategory(@RequestBody Category category){
+    public ResponseEntity<Object> createCategory(@RequestBody Category category) {
         try {
-            return ResponseEntity.ok(categoryService.createCategory(category));
+            if (category != null && category.getName() != null) {
+                return ResponseEntity.ok(categoryService.createCategory(category));
+            }
         } catch (Exception e) {
             String errorMessage = "Error creating category";
             if (e instanceof DataIntegrityViolationException) {
@@ -63,21 +68,24 @@ public class CategoryController {
             }
             return ResponseEntity.badRequest().body(errorMessage);
         }
+            return ResponseEntity.badRequest().body("Mala entrada");
     }
 
     /**
      * End point to get a category by his id
+     *
      * @param id the category id
      * @return the category
      */
-    @GetMapping(name = "getCategoryById", path = "/category/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getCategoryById(@PathVariable(name = "id") Long id){
+    @GetMapping(name = "getCategoryById", path = "/category/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getCategoryById(@PathVariable(name = "id") Long id) {
         Optional<Category> category = categoryService.getCategoryById(id);
         return category.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(category);
     }
 
     /**
      * End point to get a category by his name
+     *
      * @param name the name
      * @return the category
      */
@@ -93,6 +101,7 @@ public class CategoryController {
 
     /**
      * End point to find the category, if exists, delete it
+     *
      * @param id the id
      * @return the category
      */
@@ -101,12 +110,14 @@ public class CategoryController {
         try {
             categoryService.deleteCategoryById(id);
             return new ResponseEntity<>("Category deleted", HttpStatus.OK);
-        } catch(Exception e) {
-            return new ResponseEntity<>(e.getMessage(),HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.OK);
         }
     }
+
     /**
      * End point to find the category, if exists, login him
+     *
      * @param category the category
      * @return the category
      */

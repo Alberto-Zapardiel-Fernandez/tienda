@@ -1,53 +1,118 @@
-import { Component, OnInit } from '@angular/core';
-import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import {
+  FormGroup,
+  Validators,
+  FormControl,
+  ReactiveFormsModule,
+} from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { CategoriesService } from '../../services/categories.service';
 import { CategoryInterface } from '../../interfaces/category.interface';
 import { MatDialog } from '@angular/material/dialog';
 import { CategoryModalComponent } from '../category-modal/category-modal.component';
 import { MatDialogModule } from '@angular/material/dialog';
+import { ProductService } from '../../services/product.service';
 
 @Component({
   selector: 'app-product',
   standalone: true,
-  imports: [CommonModule, MatDialogModule],
+  imports: [CommonModule, MatDialogModule, ReactiveFormsModule],
   templateUrl: './product.component.html',
   styleUrl: './product.component.css',
 })
 export class ProductComponent implements OnInit {
-  createForm: FormGroup;
+  @ViewChild('imageInput') imageInput!: ElementRef;
+  @ViewChild('imagePreview') imagePreview!: ElementRef;
+  productForm = new FormGroup({
+    name: new FormControl('', Validators.required),
+    description: new FormControl('', Validators.required),
+    price: new FormControl(
+      '',
+      Validators.compose([Validators.required, Validators.minLength(1)])
+    ),
+    stock: new FormControl(
+      '',
+      Validators.compose([Validators.required, Validators.minLength(1)])
+    ),
+    idCategory: new FormControl('1', Validators.required),
+    image: new FormControl(''),
+  });
   categories: CategoryInterface[] = [];
 
   constructor(
-    private fb: FormBuilder,
     private categoryService: CategoriesService,
+    private productService: ProductService,
     public dialog: MatDialog
-  ) {
-    this.createForm = this.fb.group({
-      name: ['', Validators.required],
-      description: ['', Validators.required],
-      price: [0, Validators.required],
-      stock: [0, Validators.required],
-      idCategory: ['', Validators.required],
-      image: ['', Validators.required],
-    });
-  }
-
+  ) {}
   ngOnInit() {
     // Obtener las categorías desde el servicio
     this.getCategories();
+    const fileInput = document.getElementById(
+      'fileInput'
+    ) as HTMLInputElement | null;
+
+    if (fileInput) {
+      fileInput.addEventListener('change', (event: any) => {
+        const file: File | null = event.target.files?.[0];
+
+        if (file) {
+          const reader = new FileReader();
+
+          reader.onload = (e: any) => {
+            (document.getElementById('imagePreview') as HTMLImageElement).src =
+              e.target.result as string;
+          };
+
+          reader.readAsDataURL(file);
+
+          // Asignar el nombre del archivo al formulario reactivo
+          // Asegurarse de que el formulario esté actualizado
+          setTimeout(() => {
+            this.productForm.patchValue({ image: file.name });
+          }, 0);
+        }
+      });
+    }
   }
 
-  onSubmit() {
-    console.log('Enviando');
-  }
+  onSubmit() {}
 
   //Método para ver los productos y modificarlos
   verProductos() {
     console.log('Ver productos');
   }
 
-  public agregarProducto() {}
+  modificarProductos() {
+    console.log('Modificar productos');
+  }
+  public agregarProducto(e: Event) {
+    e.preventDefault();
+    const fileInput = document.getElementById('fileInput') as HTMLInputElement;
+    const file: File | null = fileInput.files?.[0] ?? null;
+    if (this.productForm.valid) {
+      this.productService
+        .createProduct(
+          'product',
+          this.productForm.get('name')?.value ?? '',
+          this.productForm.get('description')?.value ?? '',
+          Number(this.productForm.get('price')?.value) ?? 1,
+          Number(this.productForm.get('stock')?.value) ?? 1,
+          Number(this.productForm.get('idCategory')?.value) ?? 1,
+          file
+        )
+        .subscribe({
+          next: (result) => {
+            console.log(result);
+          },
+          error: (err) => {
+            console.error('Error:', err);
+          },
+        });
+    } else {
+      console.log('Formulario inválido');
+      this.productForm.reset();
+    }
+  }
 
   //Método para agregar una categoría a la base de datos
   public agregarCategoria() {

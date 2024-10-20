@@ -130,3 +130,7 @@ button {
 .image-upload {
   margin: 0 auto;
 }
+
+.red {
+  color: var(--red-spain-color);
+}
