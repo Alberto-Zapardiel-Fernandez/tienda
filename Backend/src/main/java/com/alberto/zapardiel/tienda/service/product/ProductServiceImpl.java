@@ -4,6 +4,7 @@ import com.alberto.zapardiel.tienda.model.Product;
 import com.alberto.zapardiel.tienda.repository.ProductRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -47,6 +48,14 @@ public class ProductServiceImpl implements ProductService {
      */
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    /**
+     * @param id the id
+     */
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
     }
 
 }

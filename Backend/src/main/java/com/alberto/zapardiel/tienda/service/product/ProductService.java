@@ -1,6 +1,7 @@
 package com.alberto.zapardiel.tienda.service.product;
 
 import com.alberto.zapardiel.tienda.model.Product;
+import org.springframework.http.ResponseEntity;
 
 import java.util.List;
 
@@ -23,4 +24,6 @@ public interface ProductService {
      * @return a list of products
      */
     List<Product> getAllProducts();
+
+    void deleteProduct(Long id);
 }

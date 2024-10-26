@@ -4,6 +4,7 @@ import com.alberto.zapardiel.tienda.model.Category;
 import com.alberto.zapardiel.tienda.model.Product;
 import com.alberto.zapardiel.tienda.service.image.ImageServiceImpl;
 import com.alberto.zapardiel.tienda.service.product.ProductService;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -15,6 +16,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -25,6 +27,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Product controller
@@ -101,5 +104,24 @@ public class ProductController {
         List<Product> products = productService.getAllProducts();
         return ResponseEntity.ok(products);
 
+    }
+
+    /**
+     * Method to delete a product
+     *
+     * @param id the product id
+     * @return the value
+     */
+    @DeleteMapping(value = "/product")
+    public ResponseEntity<String> deleteProduct(@RequestParam Long id) {
+        try {
+            productService.deleteProduct(id);
+            Map<String, String> responseBody = Map.of("message", "Product deleted successfully");
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonResponse = objectMapper.writeValueAsString(responseBody);
+            return ResponseEntity.ok(jsonResponse);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(e.getMessage());
+        }
     }
 }

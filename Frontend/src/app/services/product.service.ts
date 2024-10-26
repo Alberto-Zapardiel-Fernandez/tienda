@@ -7,6 +7,9 @@ import { ProductInterface } from '../interfaces/product-interface';
   providedIn: 'root',
 })
 export class ProductService {
+  deleteProduct(endpoint: String, productId: Number) {
+    return this.http.delete(`${this.API_URL}${endpoint}?id=${productId}`);
+  }
   getProducts(endpoint: string) {
     return this.http.get<ProductInterface[]>(`${this.API_URL}${endpoint}`);
   }

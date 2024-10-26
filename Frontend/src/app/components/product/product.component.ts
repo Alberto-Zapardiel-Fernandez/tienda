@@ -14,6 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ProductService } from '../../services/product.service';
 import { ProductInterface } from '../../interfaces/product-interface';
 import { SuccessModalComponent } from '../success-modal/success-modal.component';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -45,6 +46,7 @@ export class ProductComponent implements OnInit {
   constructor(
     private categoryService: CategoriesService,
     private productService: ProductService,
+    private router: Router,
     public dialog: MatDialog,
     public successDialog: MatDialog
   ) {}
@@ -84,29 +86,9 @@ export class ProductComponent implements OnInit {
   //Método para ver los productos y modificarlos
   verProductos() {
     console.log('Ver productos');
-    this.productService.getProducts('products').subscribe({
-      next: (result) => {
-        if (result.length > 0) {
-          result.forEach((element) => {
-            let url = `http://localhost:8080${element.imageUrl}`;
-            element.imageUrl = url;
-            console.log(url);
-          });
-          this.products = result;
-          console.log(result);
-        } else {
-          console.error('No se encontraron productos');
-        }
-      },
-      error: (err) => {
-        console.error('Error:', err);
-      },
-    });
+    this.router.navigate(['/product-list']);
   }
 
-  modificarProductos() {
-    console.log('Modificar productos');
-  }
   public agregarProducto(e: Event) {
     e.preventDefault();
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
