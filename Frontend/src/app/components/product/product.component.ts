@@ -14,7 +14,7 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { ProductService } from '../../services/product.service';
 import { ProductInterface } from '../../interfaces/product-interface';
 import { SuccessModalComponent } from '../success-modal/success-modal.component';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-product',
@@ -42,15 +42,39 @@ export class ProductComponent implements OnInit {
   });
   categories: CategoryInterface[] = [];
   products: ProductInterface[] = [];
+  id: String = '0';
+  product: ProductInterface | null = null;
 
   constructor(
     private categoryService: CategoriesService,
     private productService: ProductService,
     private router: Router,
+    private route: ActivatedRoute,
     public dialog: MatDialog,
     public successDialog: MatDialog
   ) {}
   ngOnInit() {
+    this.route.params.subscribe((params) => {
+      this.id = params['id'];
+      if (this.id != '0') {
+        //TODO Modificar el nombre del botón de crear a modificar y hacer el put o llamar al post que hay ya
+        this.productService.getProductById('product', this.id).subscribe({
+          next: (result) => {
+            this.product = result;
+            this.productForm.patchValue({
+              name: result.name,
+              description: result.description,
+              price: result.price.toString(),
+              stock: result.stock.toString(),
+              idCategory: this.product.idCategory.id,
+            });
+          },
+          error: (err) => {
+            console.error('Error:', err);
+          },
+        });
+      }
+    });
     // Obtener las categorías desde el servicio
     this.getCategories();
     const fileInput = document.getElementById(
@@ -80,8 +104,6 @@ export class ProductComponent implements OnInit {
       });
     }
   }
-
-  onSubmit() {}
 
   //Método para ver los productos y modificarlos
   verProductos() {

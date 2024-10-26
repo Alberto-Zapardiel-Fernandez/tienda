@@ -7,6 +7,14 @@ import { ProductInterface } from '../interfaces/product-interface';
   providedIn: 'root',
 })
 export class ProductService {
+  getProductById(
+    endpoint: String,
+    productId: String
+  ): Observable<ProductInterface> {
+    return this.http.get<ProductInterface>(
+      `${this.API_URL}${endpoint}?id=${productId}`
+    );
+  }
   deleteProduct(endpoint: String, productId: Number) {
     return this.http.delete(`${this.API_URL}${endpoint}?id=${productId}`);
   }

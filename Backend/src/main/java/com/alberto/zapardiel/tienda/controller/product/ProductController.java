@@ -28,6 +28,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
+import java.util.Optional;
 
 /**
  * Product controller
@@ -122,6 +123,15 @@ public class ProductController {
             return ResponseEntity.ok(jsonResponse);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(e.getMessage());
+        }
+    }
+
+    @GetMapping(value = "/product")
+    public ResponseEntity<Optional<Product>> getProductById(@RequestParam Long id){
+        try{
+            return ResponseEntity.ok(productService.getProductById(id));
+        }catch (Exception e){
+            return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }
     }
 }

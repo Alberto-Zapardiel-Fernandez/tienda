@@ -3,6 +3,7 @@ package com.alberto.zapardiel.tienda.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -43,7 +44,7 @@ public class Product {
      * description
      */
     @Column(name = "descripcion")
-    @JsonProperty("descripcion")
+    @JsonProperty("description")
     private String description;
     /**
      * price
@@ -65,7 +66,7 @@ public class Product {
     /**
      * idCategory
      */
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Category idCategory;
 }

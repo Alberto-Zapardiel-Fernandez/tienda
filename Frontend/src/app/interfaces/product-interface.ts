@@ -4,6 +4,6 @@ export interface ProductInterface {
   description: string;
   price: number;
   stock: number;
-  idCategory: number;
+  idCategory: any;
   imageUrl: string;
 }

@@ -96,7 +96,7 @@ export class ProductosComponent implements OnInit {
   }
 
   modificarProducto(producto: ProductInterface) {
-    // Aquí implementarías la lógica para modificar el producto
     console.log('Modificar producto:', producto);
+    this.router.navigate(['/product', { id: producto.id }]);
   }
 }
