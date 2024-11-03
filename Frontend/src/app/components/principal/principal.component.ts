@@ -30,7 +30,7 @@ export class PrincipalComponent implements OnInit {
         this.router.navigate(['/product']);
         break;
       case 4:
-        this.router.navigate(['/principal']);
+        this.router.navigate(['/invoice']);
         break;
       case 5:
         this.router.navigate(['/principal']);

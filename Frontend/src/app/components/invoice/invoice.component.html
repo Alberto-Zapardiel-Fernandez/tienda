@@ -1,0 +1,17 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="search-container">
+      <div class="col-md-6">
+        <form [formGroup]="searchForm">
+          <input type="text" class="form-control form-control-lg" placeholder="Buscar productos..." aria-label="Buscar"
+            aria-describedby="basic-addon1" formControlName="searchTerm" (keyup)="onSearch()">
+        </form>
+      </div>
+      <ul class="list-group" *ngIf="filteredProducts.length > 0">
+        <li *ngFor="let product of filteredProducts" class="list-group-item" (click)="logProductDetails(product)">
+          {{ product.name }}
+        </li>
+      </ul>
+    </div>
+  </div>
+</div>

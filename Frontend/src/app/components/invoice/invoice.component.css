@@ -1,0 +1,32 @@
+.search-container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.search-input {
+  width: 100%;
+  padding: 10px;
+  /* Añade un poco de espacio interno al input */
+  border: 1px solid #ccc;
+  /* Agrega un borde para mejor visualización */
+  border-radius: 4px;
+  /* Añade esquinas redondeadas */
+}
+
+.list-group {
+  margin-top: 10px;
+  border-top: none;
+  /* Elimina el borde superior para una mejor transición */
+  border-radius: 4px;
+}
+
+.list-group-item {
+  padding: 10px;
+  cursor: pointer;
+  width: 30%;
+
+  &:hover {
+    background-color: #f5f5f5;
+  }
+}
