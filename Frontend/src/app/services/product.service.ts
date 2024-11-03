@@ -49,4 +49,28 @@ export class ProductService {
       responseType: 'text',
     });
   }
+  updateProduct(
+    endpoint: string,
+    id: string,
+    name: string,
+    description: string,
+    price: number,
+    stock: number,
+    idCategory: number,
+    image: File | null = null
+  ): Observable<any> {
+    const formData = new FormData();
+    formData.append('id', id);
+    formData.append('name', name);
+    formData.append('description', description);
+    formData.append('price', price.toString());
+    formData.append('stock', stock.toString());
+    formData.append('idCategory', idCategory.toString());
+    if (image) {
+      formData.append('image', image, image.name);
+    }
+    return this.http.put(`${this.API_URL}${endpoint}`, formData, {
+      responseType: 'text',
+    });
+  }
 }

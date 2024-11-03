@@ -1,5 +1,5 @@
 <div *ngIf="categories.length != 0">
-  <form (ngSubmit)="agregarProducto($event)" [formGroup]="productForm">
+  <form (ngSubmit)="agregarProducto($event, btnMessage)" [formGroup]="productForm">
     <div>
       <div class="red" *ngIf="productForm.get('name')?.hasError('required')">
         El nombre es obligatorio.
@@ -43,14 +43,15 @@
     <div class="image-upload">
       <input type="file" id="fileInput" style="display: none;" formControlName="image">
       <label for="fileInput" class="custom-file-upload">
-        <img id="imagePreview" src="assets/Upload.jpeg" alt="Subir archivo">
+        <img id="imagePreview" [src]="'assets/Upload.jpeg'" alt="Subir archivo">
         Seleccionar archivo
       </label>
     </div>
-    <button type="submit">Crear Producto</button>
+    <button type="submit">{{btnMessage}}</button>
   </form>
 </div>
 <div class="button-container">
-  <button (click)="verProductos()">Ver productos</button>
-  <button (click)="agregarCategoria()">Agregar Categoría</button>
+  <button class="btn btn-success" (click)="verProductos()">Ver productos</button>
+  <button class="btn btn-warning" (click)="agregarCategoria()">Agregar Categoría</button>
+  <button class="btn btn-danger" (click)="volver()">Volver</button>
 </div>

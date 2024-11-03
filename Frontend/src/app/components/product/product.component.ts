@@ -42,8 +42,9 @@ export class ProductComponent implements OnInit {
   });
   categories: CategoryInterface[] = [];
   products: ProductInterface[] = [];
-  id: String = '0';
+  id: string = '0';
   product: ProductInterface | null = null;
+  btnMessage: String = 'Crear Producto';
 
   constructor(
     private categoryService: CategoriesService,
@@ -56,8 +57,8 @@ export class ProductComponent implements OnInit {
   ngOnInit() {
     this.route.params.subscribe((params) => {
       this.id = params['id'];
-      if (this.id != '0') {
-        //TODO Modificar el nombre del botón de crear a modificar y hacer el put o llamar al post que hay ya
+      if (this.id != null) {
+        this.btnMessage = 'Modificar Producto';
         this.productService.getProductById('product', this.id).subscribe({
           next: (result) => {
             this.product = result;
@@ -67,36 +68,31 @@ export class ProductComponent implements OnInit {
               price: result.price.toString(),
               stock: result.stock.toString(),
               idCategory: this.product.idCategory.id,
+              image: 'http://localhost:8080' + result.imageUrl,
             });
           },
           error: (err) => {
             console.error('Error:', err);
           },
         });
+      } else {
+        this.btnMessage = 'Crear Producto';
       }
     });
-    // Obtener las categorías desde el servicio
     this.getCategories();
     const fileInput = document.getElementById(
       'fileInput'
     ) as HTMLInputElement | null;
-
     if (fileInput) {
       fileInput.addEventListener('change', (event: any) => {
         const file: File | null = event.target.files?.[0];
-
         if (file) {
           const reader = new FileReader();
-
           reader.onload = (e: any) => {
             (document.getElementById('imagePreview') as HTMLImageElement).src =
               e.target.result as string;
           };
-
           reader.readAsDataURL(file);
-
-          // Asignar el nombre del archivo al formulario reactivo
-          // Asegurarse de que el formulario esté actualizado
           setTimeout(() => {
             this.productForm.patchValue({ image: file.name });
           }, 0);
@@ -111,35 +107,63 @@ export class ProductComponent implements OnInit {
     this.router.navigate(['/product-list']);
   }
 
-  public agregarProducto(e: Event) {
+  public agregarProducto(e: Event, btnMessage: String) {
     e.preventDefault();
     const fileInput = document.getElementById('fileInput') as HTMLInputElement;
     const file: File | null = fileInput.files?.[0] ?? null;
     if (this.productForm.valid) {
-      this.productService
-        .createProduct(
-          'product',
-          this.productForm.get('name')?.value ?? '',
-          this.productForm.get('description')?.value ?? '',
-          Number(this.productForm.get('price')?.value) ?? 1,
-          Number(this.productForm.get('stock')?.value) ?? 1,
-          Number(this.productForm.get('idCategory')?.value) ?? 1,
-          file
-        )
-        .subscribe({
-          next: () => {
-            this.successDialog.open(SuccessModalComponent, {
-              width: '250px',
-              data: {
-                message: 'Agregado correctamente',
-              },
-            });
-            this.productForm.reset();
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
+      if (btnMessage == 'Modificar Producto') {
+        this.productService
+          .updateProduct(
+            'product',
+            this.id,
+            this.productForm.get('name')?.value ?? '',
+            this.productForm.get('description')?.value ?? '',
+            Number(this.productForm.get('price')?.value) ?? 1,
+            Number(this.productForm.get('stock')?.value) ?? 1,
+            Number(this.productForm.get('idCategory')?.value) ?? 1,
+            file
+          )
+          .subscribe({
+            next: () => {
+              this.successDialog.open(SuccessModalComponent, {
+                width: '250px',
+                data: {
+                  message: 'Modificado correctamente',
+                },
+              });
+              this.productForm.reset();
+            },
+            error: (err) => {
+              console.error('Error:', err);
+            },
+          });
+      } else {
+        this.productService
+          .createProduct(
+            'product',
+            this.productForm.get('name')?.value ?? '',
+            this.productForm.get('description')?.value ?? '',
+            Number(this.productForm.get('price')?.value) ?? 1,
+            Number(this.productForm.get('stock')?.value) ?? 1,
+            Number(this.productForm.get('idCategory')?.value) ?? 1,
+            file
+          )
+          .subscribe({
+            next: () => {
+              this.successDialog.open(SuccessModalComponent, {
+                width: '250px',
+                data: {
+                  message: 'Agregado correctamente',
+                },
+              });
+              this.productForm.reset();
+            },
+            error: (err) => {
+              console.error('Error:', err);
+            },
+          });
+      }
     } else {
       console.log('Formulario inválido');
       this.productForm.reset();
@@ -148,7 +172,6 @@ export class ProductComponent implements OnInit {
   //Método para agregar una categoría a la base de datos
   public agregarCategoria() {
     const dialogRef = this.dialog.open(CategoryModalComponent);
-
     dialogRef.afterClosed().subscribe((result) => {
       this.categoryService.createCategory('category', result).subscribe({
         next: () => {
@@ -176,5 +199,9 @@ export class ProductComponent implements OnInit {
         console.error('Error:', err);
       },
     });
+  }
+
+  volver() {
+    this.router.navigate(['principal']);
   }
 }

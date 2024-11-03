@@ -13,7 +13,8 @@ public interface ProductService {
 
     /**
      * Method to create a product
-     * @param product the poduct
+     * @param product the product
+     * @param urlImage the url
      * @return the product
      */
     String createProduct(Product product, String urlImage);
@@ -28,4 +29,5 @@ public interface ProductService {
     void deleteProduct(Long id);
 
     Optional<Product> getProductById(Long id);
+
 }

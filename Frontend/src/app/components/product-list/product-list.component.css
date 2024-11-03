@@ -2,10 +2,9 @@
   display: flex;
   justify-content: space-around;
   align-items: center;
-  padding: 15px;
+  padding-top: 10px;
   border-bottom: 1px solid #ddd;
   gap: 10px;
-  /* Ajusta el espacio entre los elementos */
 }
 
 .producto-lista li img {
@@ -13,7 +12,6 @@
   height: 100px;
   object-fit: cover;
   margin: 0;
-  /* Elimina márgenes innecesarios */
 }
 
 .info-producto {
@@ -46,14 +44,12 @@
 
 .producto-container {
   text-align: center;
-  /* Centra los elementos dentro del contenedor */
 }
 
 .volver-btn {
-  background-color: #4CAF50;
-  /* Verde claro */
-  color: white;
-  padding: 15px 30px;
+  background-color: var(--red-spain-color);
+  color: var(--yellow-spain-color);
+  padding: 1px 15px;
   border-radius: 5px;
   text-align: center;
   text-decoration: none;
@@ -61,24 +57,19 @@
   font-size: 16px;
   transition: background-color 0.3s ease;
   box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
-
-  /* Para añadir un icono, puedes usar una fuente de iconos como Font Awesome */
   padding-left: 40px;
   position: relative;
 }
 
 .volver-btn::before {
   content: "\2190";
-  /* Código del icono de flecha hacia la izquierda en Font Awesome */
   font-family: Font Awesome;
   position: absolute;
   left: 15px;
   top: 50%;
   transform: translateY(-50%);
-  /* Centrar verticalmente el icono */
 }
 
-.volver-btn:hover {
-  background-color: #3e8e41;
-  /* Verde más oscuro al pasar el ratón */
+button:hover {
+  opacity: 0.8;
 }

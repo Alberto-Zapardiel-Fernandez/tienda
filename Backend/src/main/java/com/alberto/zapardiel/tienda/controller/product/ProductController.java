@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -54,7 +55,12 @@ public class ProductController {
 
     /**
      * Endpoint to create a product
-     *
+     * @param description the description
+     * @param idCategory the id category
+     * @param name the name
+     * @param price the price
+     * @param stock the stock
+     * @param image the image
      * @return a response
      */
     @PostMapping(value = "/product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
@@ -75,6 +81,56 @@ public class ProductController {
                 urlImage = "src/main/java/com/alberto/zapardiel/tienda/images/default_image.jpg";
             }
             Product product = Product.builder()
+                    .name(name)
+                    .description(description)
+                    .imageUrl(urlImage)
+                    .price(price)
+                    .stock(stock)
+                    .idCategory(Category.builder()
+                            .id(idCategory)
+                            .build())
+                    .build();
+            response = productService.createProduct(product, urlImage);
+            return ResponseEntity.status(HttpStatus.OK).body(response);
+        } catch (IOException e) {
+            // Manejo de excepción más detallado
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error uploading image: " + e.getMessage());
+        } catch (Exception e) {
+            // Manejo de otras excepciones
+            return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Error creating product: " + e.getMessage());
+        }
+    }
+    /**
+     * Endpoint to update a product
+     * @param id the id
+     * @param description the description
+     * @param idCategory the id category
+     * @param name the name
+     * @param price the price
+     * @param stock the stock
+     * @param image the image
+     * @return a response
+     */
+    @PutMapping(value = "/product", consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity<String> updateProduct(
+            @RequestParam(value = "image", required = false) MultipartFile image,
+            @RequestParam("id") String id,
+            @NotBlank @Size(min = 3, max = 50) @RequestParam("name") String name,
+            @NotBlank @Size(min = 10) @RequestParam("description") String description,
+            @NotNull @Min(0) @RequestParam("price") BigDecimal price,
+            @NotNull @Min(0) @RequestParam("stock") Integer stock,
+            @NotNull @Min(1) @RequestParam("idCategory") Integer idCategory) {
+
+        String response;
+        String urlImage;
+        try {
+            if (image != null && !image.isEmpty()) {
+                urlImage = imageService.uploadImage(image);
+            } else {
+                urlImage = "src/main/java/com/alberto/zapardiel/tienda/images/default_image.jpg";
+            }
+            Product product = Product.builder()
+                    .id(Long.parseLong(id))
                     .name(name)
                     .description(description)
                     .imageUrl(urlImage)
