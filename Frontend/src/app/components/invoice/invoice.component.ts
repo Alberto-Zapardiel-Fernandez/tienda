@@ -11,6 +11,8 @@ import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { ClientInterface } from '../../interfaces/client.interface';
 import { ClientService } from '../../services/client.service';
+import { jsPDF } from 'jspdf';
+import autoTable from 'jspdf-autotable';
 
 @Component({
   selector: 'app-invoice',
@@ -80,9 +82,7 @@ export class InvoiceComponent implements OnInit {
         cliente.dni.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
     );
   }
-  generarPDF() {
-    throw new Error('Method not implemented.');
-  }
+  generarPDF() {}
   cleanProductList() {
     this.cartItems = [];
     localStorage.removeItem('cartItems');
