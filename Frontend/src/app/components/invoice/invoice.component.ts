@@ -9,7 +9,6 @@ import { ProductInterface } from '../../interfaces/product-interface';
 import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
-import * as jsPDF from 'jspdf';
 
 @Component({
   selector: 'app-invoice',
@@ -48,6 +47,7 @@ export class InvoiceComponent implements OnInit {
     });
     this.calculateTotal();
   }
+  /*
   generarPDF() {
     const doc = new jsPDF();
     doc.setFontSize(16);
@@ -67,7 +67,7 @@ export class InvoiceComponent implements OnInit {
     });
 
     doc.save('factura.pdf');
-  }
+  }*/
   cleanProductList() {
     this.cartItems = [];
     localStorage.removeItem('cartItems');
