@@ -1,17 +1,46 @@
 <div class="container">
-  <div class="row justify-content-center">
-    <div class="search-container">
-      <div class="col-md-6">
+  <div class="row">
+    <div class="col-md-1">
+      <button class="volver-btn" (click)="volver()">Volver</button>
+    </div>
+    <div class="col-md-3">
+      <div class="search-container">
         <form [formGroup]="searchForm">
           <input type="text" class="form-control form-control-lg" placeholder="Buscar productos..." aria-label="Buscar"
             aria-describedby="basic-addon1" formControlName="searchTerm" (keyup)="onSearch()">
         </form>
+        <ul class="list-group search-results" *ngIf="filteredProducts.length > 0">
+          <li *ngFor="let product of filteredProducts" class="list-group-item" (click)="addProductToCart(product)">
+            {{ product.name }}
+          </li>
+        </ul>
       </div>
-      <ul class="list-group" *ngIf="filteredProducts.length > 0">
-        <li *ngFor="let product of filteredProducts" class="list-group-item" (click)="logProductDetails(product)">
-          {{ product.name }}
-        </li>
-      </ul>
+    </div>
+    <div class="col-md-8">
+      <div class="cart-container border">
+        <div class="header-invoices">
+          <h2 class="text-center">FACTURACIÓN</h2> <button *ngIf="cartItems.length > 0"
+            (click)="cleanProductList()">Limpiar lista de productos</button>
+        </div>
+        <ul class="list-group">
+          <li *ngFor="let cartItem of cartItems">
+            {{ cartItem.product.name }} :<span>Precio Total:<span class="fw-bolder"> {{ cartItem.product.price *
+                cartItem.quantity
+                }}€</span></span>
+            <div class="quantity">
+              <button (click)="decrementQuantity(cartItem)">-</button>
+              <span>{{ cartItem.quantity }}</span>
+              <button (click)="incrementQuantity(cartItem, cartItem.product)">+</button>
+            </div>
+          </li>
+          <li class="total-row pt-4" *ngIf="cartItems.length > 0">
+            <div class="total-row">
+              <p>Precio Final: <span class="fw-bolder">{{ totalAmount }}€</span></p>
+              <button (click)="generarPDF()">Imprimir factura</button>
+            </div>
+          </li>
+        </ul>
+      </div>
     </div>
   </div>
 </div>
