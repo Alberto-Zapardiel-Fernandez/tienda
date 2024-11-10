@@ -1,8 +1,10 @@
+<div class="volver">
+  <div>
+    <button class="volver-btn" (click)="volver()">Volver</button>
+  </div>
+</div>
 <div class="container">
   <div class="row">
-    <div class="col-md-1">
-      <button class="volver-btn" (click)="volver()">Volver</button>
-    </div>
     <div class="col-md-3">
       <div class="search-container">
         <form [formGroup]="searchForm">
@@ -16,11 +18,17 @@
         </ul>
       </div>
     </div>
-    <div class="col-md-8">
+    <div class="col-md-7" [ngClass]="{'col-md-9': clienteSeleccionado}">
       <div class="cart-container border">
         <div class="header-invoices">
-          <h2 class="text-center">FACTURACIÓN</h2> <button *ngIf="cartItems.length > 0"
-            (click)="cleanProductList()">Limpiar lista de productos</button>
+          <h2 class="text-center">FACTURACIÓN</h2>
+          <button *ngIf="cartItems.length > 0" (click)="cleanProductList()">Limpiar productos</button>
+        </div>
+        <div *ngIf="clienteSeleccionado && !mostrarCliente" class="datos-cliente">
+          <p>Nombre: {{clienteSeleccionado.name}} {{clienteSeleccionado.lastName}}</p>
+          <p>NIF: {{ clienteSeleccionado.dni }}</p>
+          <p>Dirección: {{ clienteSeleccionado.address }}</p>
+          <button (click)="borrarCliente()">Borrar</button>
         </div>
         <ul class="list-group">
           <li *ngFor="let cartItem of cartItems">
@@ -36,11 +44,24 @@
           <li class="total-row pt-4" *ngIf="cartItems.length > 0">
             <div class="total-row">
               <p>Precio Final: <span class="fw-bolder">{{ totalAmount }}€</span></p>
-              <!--<button (click)="generarPDF()">Imprimir factura</button>-->
+              <button (click)="generarPDF()">Imprimir factura</button>
             </div>
           </li>
         </ul>
       </div>
     </div>
+    <div class="col-md-2" *ngIf="mostrarCliente">
+      <h2 class="text-center">Añadir cliente</h2>
+      <input type="text" [(ngModel)]="terminoBusqueda" (input)="buscarCliente()">
+      <ul *ngIf="clientesFiltrados.length > 0" class="list-group">
+        <li *ngFor="let cliente of clientesFiltrados" class="list-group-item" [title]="cliente.phone"
+          (click)="seleccionaCliente(cliente)">
+          {{ cliente.name }} {{cliente.lastName}}
+        </li>
+      </ul>
+      <div *ngIf="clients.length === 0">
+        No se encontraron clientes.
+        <button (click)="goToClients()">Ir a añadir cliente</button>
+      </div>
+    </div>
   </div>
-</div>

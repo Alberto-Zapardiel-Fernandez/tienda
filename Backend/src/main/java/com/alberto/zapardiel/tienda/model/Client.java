@@ -44,7 +44,7 @@ public class Client {
     private String email;
 
     @Column(name = "direccion")
-    private String direction;
+    private String address;
 
     @Column(name = "descuento")
     private Integer discount;

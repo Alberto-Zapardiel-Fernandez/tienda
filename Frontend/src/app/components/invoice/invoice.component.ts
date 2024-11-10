@@ -9,6 +9,8 @@ import { ProductInterface } from '../../interfaces/product-interface';
 import { ProductService } from '../../services/product.service';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
+import { ClientInterface } from '../../interfaces/client.interface';
+import { ClientService } from '../../services/client.service';
 
 @Component({
   selector: 'app-invoice',
@@ -23,10 +25,16 @@ export class InvoiceComponent implements OnInit {
   filteredProducts: ProductInterface[] = [];
   cartItems: any[] = [];
   totalAmount: number = 0;
+  clients: ClientInterface[] = [];
+  terminoBusqueda: string = '';
+  clientesFiltrados: ClientInterface[] = [];
+  clienteSeleccionado: ClientInterface | undefined;
+  mostrarCliente: boolean = true;
 
   constructor(
     private fb: FormBuilder,
     private productService: ProductService,
+    private clientService: ClientService,
     private changeDetectorRef: ChangeDetectorRef,
     private router: Router
   ) {
@@ -42,32 +50,39 @@ export class InvoiceComponent implements OnInit {
         this.cartItems = JSON.parse(storedCartItems);
       }
     }
+    this.clientService.getClients('clients').subscribe((clients) => {
+      this.clients = clients || [];
+    });
     this.productService.getProducts('products').subscribe((products) => {
       this.products = products || [];
     });
     this.calculateTotal();
   }
-  /*
+  borrarCliente() {
+    this.clienteSeleccionado = undefined;
+    this.mostrarCliente = true;
+  }
+  seleccionaCliente(cliente: ClientInterface) {
+    this.clienteSeleccionado = cliente;
+    this.clientesFiltrados = [];
+    this.mostrarCliente = false;
+    console.log(cliente);
+  }
+  goToClients() {
+    this.router.navigate(['/client']);
+  }
+  buscarCliente() {
+    this.clientesFiltrados = this.clients.filter(
+      (cliente) =>
+        cliente.name
+          .toLowerCase()
+          .includes(this.terminoBusqueda.toLowerCase()) ||
+        cliente.dni.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
+    );
+  }
   generarPDF() {
-    const doc = new jsPDF();
-    doc.setFontSize(16);
-    doc.text('Factura', 10, 10);
-    doc.text(`Precio Final: ${this.totalAmount}€`, 10, 20);
-    // ... Agregar más líneas con los detalles de la factura ...
-
-    // Agregar una tabla
-    const tableData = [
-      ['Producto', 'Cantidad', 'Precio'],
-      ['Manzana', 2, 1.5],
-      // ... más productos ...
-    ];
-    doc.autoTable({
-      head: tableData[0],
-      body: tableData.slice(1),
-    });
-
-    doc.save('factura.pdf');
-  }*/
+    throw new Error('Method not implemented.');
+  }
   cleanProductList() {
     this.cartItems = [];
     localStorage.removeItem('cartItems');

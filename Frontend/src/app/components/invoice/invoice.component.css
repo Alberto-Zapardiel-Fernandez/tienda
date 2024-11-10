@@ -106,6 +106,12 @@
   transform: translateY(-50%);
 }
 
+.volver {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
 .header-invoices {
   display: flex;
   justify-content: space-around;
@@ -132,7 +138,17 @@
 
 .total-row {
   display: flex;
+  width: 90%;
   justify-content: space-between;
   align-items: center;
   padding: 10px;
+}
+
+.datos-cliente {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
 }
