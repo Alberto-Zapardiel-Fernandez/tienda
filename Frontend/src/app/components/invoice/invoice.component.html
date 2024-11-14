@@ -24,30 +24,36 @@
           <h2 class="text-center">FACTURACIÓN</h2>
           <button *ngIf="cartItems.length > 0" (click)="cleanProductList()">Limpiar productos</button>
         </div>
-        <div *ngIf="clienteSeleccionado && !mostrarCliente" class="datos-cliente">
-          <p>Nombre: {{clienteSeleccionado.name}} {{clienteSeleccionado.lastName}}</p>
-          <p>NIF: {{ clienteSeleccionado.dni }}</p>
-          <p>Dirección: {{ clienteSeleccionado.address }}</p>
-          <button (click)="borrarCliente()">Borrar</button>
-        </div>
-        <ul class="list-group">
-          <li *ngFor="let cartItem of cartItems">
-            {{ cartItem.product.name }} :<span>Precio Total:<span class="fw-bolder"> {{ cartItem.product.price *
-                cartItem.quantity
-                }}€</span></span>
-            <div class="quantity">
-              <button (click)="decrementQuantity(cartItem)">-</button>
-              <span>{{ cartItem.quantity }}</span>
-              <button (click)="incrementQuantity(cartItem, cartItem.product)">+</button>
-            </div>
-          </li>
-          <li class="total-row pt-4" *ngIf="cartItems.length > 0">
-            <div class="total-row">
+        <div id="facturacion">
+          <div *ngIf="clienteSeleccionado && !mostrarCliente" class="datos-cliente">
+            <p>Nombre: {{clienteSeleccionado.name}} {{clienteSeleccionado.lastName}}</p>
+            <p>NIF: {{ clienteSeleccionado.dni }}</p>
+            <p>Dirección: {{ clienteSeleccionado.address }}</p>
+            <button (click)="borrarCliente()">Borrar</button>
+          </div>
+          <ul class="list-group">
+            <li *ngFor="let cartItem of cartItems" class="productos">
+              <span style="flex-grow: 1;">{{ cartItem.product.name }}</span>
+              <div class="precios">
+                <span class="fw-bolder" style="margin-right: 50px;">Precio Total: {{ cartItem.product.price *
+                  cartItem.quantity
+                  }}€</span>
+                <div class="quantity" style="display: flex;">
+                  <button (click)="decrementQuantity(cartItem)">-</button>
+                  <span style="margin: 0 5px;">{{ cartItem.quantity }}</span>
+                  <button (click)="incrementQuantity(cartItem, cartItem.product)">+</button>
+                </div>
+              </div>
+            </li>
+            <li class="total-row pt-4" *ngIf="cartItems.length > 0">
               <p>Precio Final: <span class="fw-bolder">{{ totalAmount }}€</span></p>
-              <button (click)="generarPDF()">Imprimir factura</button>
-            </div>
-          </li>
-        </ul>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div class="btn-generacion mt-2 d-flex justify-content-evenly">
+        <button class="btn btn-warning" (click)="generarPDF()">Imprimir factura</button>
+        <button class="btn btn-success" (click)="guardarFactura()">Guardar factura</button>
       </div>
     </div>
     <div class="col-md-2" *ngIf="mostrarCliente">

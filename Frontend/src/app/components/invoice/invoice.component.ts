@@ -12,7 +12,7 @@ import { Router } from '@angular/router';
 import { ClientInterface } from '../../interfaces/client.interface';
 import { ClientService } from '../../services/client.service';
 import { jsPDF } from 'jspdf';
-import autoTable from 'jspdf-autotable';
+import html2canvas from 'html2canvas';
 
 @Component({
   selector: 'app-invoice',
@@ -82,7 +82,32 @@ export class InvoiceComponent implements OnInit {
         cliente.dni.toLowerCase().includes(this.terminoBusqueda.toLowerCase())
     );
   }
-  generarPDF() {}
+
+  guardarFactura() {}
+  generarPDF() {
+    const element = document.getElementById('facturacion');
+
+    if (element) {
+      html2canvas(element, {
+        scale: 2,
+        useCORS: true,
+        allowTaint: true,
+      }).then((canvas) => {
+        const imgData = canvas.toDataURL('image/png', 1);
+        const pdf = new jsPDF({
+          orientation: 'portrait',
+          unit: 'mm',
+          format: 'a4', // Establece el tamaño de la página a A4
+        });
+        const imgWidth = pdf.internal.pageSize.getWidth();
+        const imgHeight = (canvas.height * imgWidth) / canvas.width;
+        pdf.addImage(imgData, 'JPEG', 0, 0, imgWidth, imgHeight);
+        pdf.save('factura.pdf');
+      });
+    } else {
+      console.error('Elemento no encontrado');
+    }
+  }
   cleanProductList() {
     this.cartItems = [];
     localStorage.removeItem('cartItems');

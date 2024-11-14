@@ -138,10 +138,26 @@
 
 .total-row {
   display: flex;
-  width: 90%;
-  justify-content: space-between;
-  align-items: center;
+  justify-content: flex-end !important;
+  margin-right: 15%;
   padding: 10px;
+  /* Puedes agregar más estilos aquí, como fondo, borde, etc. */
+}
+
+.precios {
+  display: flex;
+  align-items: center;
+}
+
+.productos {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.total-row p {
+  text-align: right;
 }
 
 .datos-cliente {
