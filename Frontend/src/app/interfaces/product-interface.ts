@@ -6,4 +6,5 @@ export interface ProductInterface {
   stock: number;
   idCategory: any;
   imageUrl: string;
+  quantity: number | undefined;
 }

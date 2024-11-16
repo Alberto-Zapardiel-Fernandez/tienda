@@ -17,7 +17,19 @@
 .info-producto {
   flex: 1;
   text-align: center;
-  flex-shrink: 1;
+}
+
+.producto-detalles {
+  display: flex;
+  justify-content: space-around;
+}
+
+.producto-descripcion {
+  text-align: center;
+}
+
+.producto-nombre, .producto-precio {
+  text-align: left;
 }
 
 .botones {

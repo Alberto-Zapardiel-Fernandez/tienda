@@ -47,8 +47,8 @@ export class UserListComponent implements OnInit {
     // multiple language, you would internationalize these strings.
     // Furthermore, you can customize the message to add additional
     // details about the values being sorted.
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    if (sortState.address) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.address}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }

@@ -12,7 +12,7 @@ export class ClientService {
       name: string;
       lastName: string;
       email: string;
-      direction: string;
+      address: string;
       dni: string;
       phone: string;
       discount: number;
@@ -30,7 +30,7 @@ export class ClientService {
       name: string;
       lastName: string;
       email: string;
-      direction: string;
+      address: string;
       dni: string;
       phone: string;
       discount: number;

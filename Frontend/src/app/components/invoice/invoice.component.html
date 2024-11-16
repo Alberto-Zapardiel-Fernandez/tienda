@@ -34,6 +34,14 @@
           <ul class="list-group">
             <li *ngFor="let cartItem of cartItems" class="productos">
               <span style="flex-grow: 1;">{{ cartItem.product.name }}</span>
+              <span *ngIf="cartItem.product.stock > 0" class="stock-info">
+                <span class="desaparece">Stock: </span> <span class="green-number">{{
+                  cartItem.product.stock
+                  }}</span>
+              </span>
+              <span *ngIf="cartItem.product.stock === 0" class="stock-info">
+                (Sin Stock)
+              </span>
               <div class="precios">
                 <span class="fw-bolder" style="margin-right: 50px;">Precio Total: {{ cartItem.product.price *
                   cartItem.quantity
@@ -51,7 +59,7 @@
           </ul>
         </div>
       </div>
-      <div class="btn-generacion mt-2 d-flex justify-content-evenly">
+      <div *ngIf="cartItems.length > 0" class="btn-generacion mt-2 d-flex justify-content-evenly">
         <button class="btn btn-warning" (click)="generarPDF()">Imprimir factura</button>
         <button class="btn btn-success" (click)="guardarFactura()">Guardar factura</button>
       </div>

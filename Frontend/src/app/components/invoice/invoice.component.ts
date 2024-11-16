@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, NgModule } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -13,6 +13,9 @@ import { ClientInterface } from '../../interfaces/client.interface';
 import { ClientService } from '../../services/client.service';
 import { jsPDF } from 'jspdf';
 import html2canvas from 'html2canvas';
+import { InvoiceService } from '../../services/invoice.service';
+import { MatDialog } from '@angular/material/dialog';
+import { SuccessModalComponent } from '../success-modal/success-modal.component';
 
 @Component({
   selector: 'app-invoice',
@@ -37,8 +40,10 @@ export class InvoiceComponent implements OnInit {
     private fb: FormBuilder,
     private productService: ProductService,
     private clientService: ClientService,
+    private invoiceService: InvoiceService,
     private changeDetectorRef: ChangeDetectorRef,
-    private router: Router
+    private router: Router,
+    public successDialog: MatDialog
   ) {
     this.searchForm = this.fb.group({
       searchTerm: '',
@@ -56,7 +61,7 @@ export class InvoiceComponent implements OnInit {
       this.clients = clients || [];
     });
     this.productService.getProducts('products').subscribe((products) => {
-      this.products = products || [];
+      this.products = products.filter((product) => product.stock > 0);
     });
     this.calculateTotal();
   }
@@ -83,7 +88,43 @@ export class InvoiceComponent implements OnInit {
     );
   }
 
-  guardarFactura() {}
+  guardarFactura() {
+    if (!this.clienteSeleccionado) {
+      // Mostrar un diálogo de confirmación
+      const confirmar = confirm(
+        '¿Estás seguro de guardar la factura sin cliente seleccionado?'
+      );
+      if (!confirmar) {
+        return;
+      }
+    }
+    const productosConCantidad = this.cartItems.map((cartItem) => ({
+      ...cartItem.product,
+      quantity: cartItem.quantity,
+    }));
+    console.log(productosConCantidad);
+    this.invoiceService
+      .generateInvoice(
+        'save_invoice',
+        this.clienteSeleccionado != null ? this.clienteSeleccionado.dni : '',
+        this.totalAmount,
+        productosConCantidad
+      )
+      .subscribe({
+        next: () => {
+          this.successDialog.open(SuccessModalComponent, {
+            width: '250px',
+            data: {
+              message: 'Agregado correctamente',
+            },
+          });
+          this.cleanProductList();
+        },
+        error: (err) => {
+          console.error('Error:', err);
+        },
+      });
+  }
   generarPDF() {
     const element = document.getElementById('facturacion');
 
@@ -179,6 +220,9 @@ export class InvoiceComponent implements OnInit {
       this.cartItems = this.cartItems.filter((item) => item !== cartItem);
     }
     this.calculateTotal();
+    if (this.cartItems.length <= 0) {
+      this.cleanProductList();
+    }
   }
 
   volver() {

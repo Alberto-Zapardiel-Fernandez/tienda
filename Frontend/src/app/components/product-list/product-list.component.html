@@ -3,10 +3,14 @@
   <ul class="producto-lista" *ngFor="let producto of productList">
     <li>
       <img [src]="producto.imageUrl" (error)="onImageError($event)" alt="{{ producto.name }}">
-      <div class="info-producto">
-        <h2>{{ producto.name }}</h2>
-        <p>{{ producto.description }}</p>
-        <p>Precio: {{ producto.price }}</p>
+      <div class="datos"
+        style="display: grid; grid-template-rows: auto 1fr; grid-template-columns: 1fr; gap: 1rem; width: 100%;">
+        <h2 class="producto-descripcion">{{ producto.description }}</h2>
+        <div class="producto-detalles">
+          <b class="producto-nombre">{{ producto.name }}</b>
+          <p class="producto-precio">Precio: {{ producto.price }}</p>
+          <b>Stock: {{producto.stock}} </b>
+        </div>
       </div>
       <div class="botones">
         <button class="modificar" (click)="modificarProducto(producto)">Modificar</button>

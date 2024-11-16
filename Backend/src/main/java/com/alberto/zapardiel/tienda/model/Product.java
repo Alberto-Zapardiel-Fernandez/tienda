@@ -10,7 +10,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Null;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -31,7 +30,6 @@ import java.math.BigDecimal;
 public class Product {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Null
     @Column(name = "id_producto")
     private Long id;
     /**
@@ -69,4 +67,6 @@ public class Product {
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_categoria")
     private Category idCategory;
+
+    private Integer quantity;
 }

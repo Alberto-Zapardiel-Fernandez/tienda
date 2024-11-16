@@ -89,6 +89,7 @@ public class ProductController {
                     .idCategory(Category.builder()
                             .id(idCategory)
                             .build())
+                    .quantity(0)
                     .build();
             response = productService.createProduct(product, urlImage);
             return ResponseEntity.status(HttpStatus.OK).body(response);
@@ -139,6 +140,7 @@ public class ProductController {
                     .idCategory(Category.builder()
                             .id(idCategory)
                             .build())
+                    .quantity(0)
                     .build();
             response = productService.createProduct(product, urlImage);
             return ResponseEntity.status(HttpStatus.OK).body(response);
