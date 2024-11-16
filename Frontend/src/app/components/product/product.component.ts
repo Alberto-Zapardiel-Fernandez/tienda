@@ -45,7 +45,7 @@ export class ProductComponent implements OnInit {
   id: string = '0';
   product: ProductInterface | null = null;
   btnMessage: String = 'Crear Producto';
-
+  imageUrl: string = 'assets/Upload.jpeg';
   constructor(
     private categoryService: CategoriesService,
     private productService: ProductService,
@@ -62,6 +62,7 @@ export class ProductComponent implements OnInit {
         this.productService.getProductById('product', this.id).subscribe({
           next: (result) => {
             this.product = result;
+            this.imageUrl = this.product.imageUrl;
             this.productForm.patchValue({
               name: result.name,
               description: result.description,
@@ -100,7 +101,17 @@ export class ProductComponent implements OnInit {
       });
     }
   }
-
+  onFileSelected(event: any) {
+    console.log('cambiando');
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        this.imageUrl = e.target?.result as string;
+      };
+      reader.readAsDataURL(file);
+    }
+  }
   //Método para ver los productos y modificarlos
   verProductos() {
     console.log('Ver productos');
