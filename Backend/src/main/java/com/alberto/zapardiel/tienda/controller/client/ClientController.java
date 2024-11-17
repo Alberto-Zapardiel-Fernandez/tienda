@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -69,8 +68,8 @@ public class ClientController {
      * @param id the client id
      * @return the client
      */
-    @GetMapping(name = "getClientById", path = "/client/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Object> getClientById(@PathVariable(name = "id") Long id){
+    @GetMapping(name = "getClientById", path = "/client",produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Object> getClientById(@RequestParam(name = "id") Long id){
         Optional<Client> client = clientService.getClientById(id);
         return client.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(client);
     }

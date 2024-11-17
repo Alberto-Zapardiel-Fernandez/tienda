@@ -4,6 +4,10 @@ import { PrincipalComponent } from './components/principal/principal.component';
 import { UserListComponent } from './components/user-list/user-list.component';
 import { ClientComponent } from './components/client/client.component';
 import { ProductComponent } from './components/product/product.component';
+import { ProductosComponent } from './components/product-list/product-list.component';
+import { InvoiceComponent } from './components/invoice/invoice.component';
+import { InvoiceListComponent } from './components/invoice-list/invoice-list.component';
+import { DetailListComponent } from './components/detail-list/detail-list.component';
 
 export const routes: Routes = [
   { path: '', component: LoginComponent },
@@ -14,4 +18,8 @@ export const routes: Routes = [
   { path: 'user-list', component: UserListComponent },
   { path: 'client', component: ClientComponent },
   { path: 'product', component: ProductComponent },
+  { path: 'product-list', component: ProductosComponent },
+  { path: 'invoice', component: InvoiceComponent },
+  { path: 'invoice-list', component: InvoiceListComponent },
+  { path: 'detail-list/:num_factura', component: DetailListComponent },
 ];

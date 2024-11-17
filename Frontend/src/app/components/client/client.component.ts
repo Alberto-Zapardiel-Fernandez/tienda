@@ -99,12 +99,8 @@ export class ClientComponent implements OnInit {
 
   /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
-    // This example uses English messages. If your application supports
-    // multiple language, you would internationalize these strings.
-    // Furthermore, you can customize the message to add additional
-    // details about the values being sorted.
-    if (sortState.direction) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.direction}ending`);
+    if (sortState.address) {
+      this._liveAnnouncer.announce(`Sorted ${sortState.address}ending`);
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
@@ -181,7 +177,7 @@ export class ClientComponent implements OnInit {
     name: string,
     lastName: string,
     email: string,
-    direction: string,
+    address: string,
     dni: string,
     phone: string,
     discount: number
@@ -191,7 +187,7 @@ export class ClientComponent implements OnInit {
         name,
         lastName,
         email,
-        direction,
+        address,
         dni,
         phone,
         discount,
@@ -214,7 +210,7 @@ export class ClientComponent implements OnInit {
     name: string,
     lastName: string,
     email: string,
-    direction: string,
+    address: string,
     dni: string,
     phone: string,
     discount: number
@@ -224,7 +220,7 @@ export class ClientComponent implements OnInit {
         name,
         lastName,
         email,
-        direction,
+        address,
         dni,
         phone,
         discount,

@@ -1,0 +1,50 @@
+<div>
+  <button class="volver-btn" (click)="volver()">Volver</button>
+  <h2 class="text-center">Detalles de la factura</h2>
+  <div *ngIf="client" class="card">
+    <div class="card-body">
+      <h3 class="card-title text-center fw-bolder">Datos del Cliente</h3>
+      <div class="card-text d-flex justify-content-around">
+        <p>Nombre: {{ client.name }} {{ client.lastName }}</p>
+        <p>Dirección: {{ client.address }}</p>
+        <p>Teléfono: {{ client.phone }}</p>
+      </div>
+    </div>
+  </div>
+</div>
+<table *ngIf="detailList.length > 0" class="table table-striped table-bordered table-primary text-white">
+  <thead>
+    <tr>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Precio Unitario</th>
+      <th>Precio total</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let detail of detailList">
+      <td>{{ detail.productName }}</td>
+      <td>{{ detail.quantity }}</td>
+      <td>{{ detail.price }} €</td>
+      <td class="fw-bolder">{{ detail.price * detail.quantity }} €</td>
+    </tr>
+    <tr>
+      <td [colSpan]="2"></td>
+      <td class="fw-bolder">IVA aplicado 21%</td>
+      <td class="fw-bolder">{{iva.toFixed(2)}}</td>
+    </tr>
+    <tr>
+      <td [colSpan]="2"></td>
+      <td class="fw-bolder">Total</td>
+      <td class="fw-bolder">{{ totalAmount }} €</td>
+    </tr>
+  </tbody>
+</table>
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+  integrity="sha512-ChzDgzNRGTfeRM4dlP1yG5wa2yuki9jIy0V4d1YwqBF<ctrl62>s://fonts.googleapis.com/icon?family=Material+Icons"
+  rel="stylesheet">
+<div *ngIf="detailList.length > 0" class="d-flex justify-content-end">
+  <button class="btn btn-success" (click)="downloadExcel()">
+    <i class="fas fa-file-excel"></i> Descargar Excel
+  </button>
+</div>

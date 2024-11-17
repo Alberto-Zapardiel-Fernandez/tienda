@@ -7,6 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Product service implementation
@@ -47,6 +48,26 @@ public class ProductServiceImpl implements ProductService {
      */
     public List<Product> getAllProducts() {
         return productRepository.findAll();
+    }
+
+    /**
+     * Method to delete a product by is id
+     * @param id the id
+     */
+    @Override
+    public void deleteProduct(Long id) {
+        productRepository.deleteById(id);
+    }
+
+    /**
+     * Method to get a product by is id
+     *
+     * @param id the id
+     * @return the product
+     */
+    @Override
+    public Optional<Product> getProductById(Long id) {
+        return productRepository.findById(id);
     }
 
 }

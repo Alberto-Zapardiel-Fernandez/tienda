@@ -1,6 +1,5 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-import { NavbarComponent } from './components/navbar/navbar.component';
 import { LoginComponent } from './components/login/login.component';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
@@ -12,7 +11,6 @@ import { SuccessModalComponent } from './components/success-modal/success-modal.
   standalone: true,
   imports: [
     RouterOutlet,
-    NavbarComponent,
     LoginComponent,
     MatFormFieldModule,
     MatInputModule,

@@ -1,0 +1,87 @@
+.producto-lista li {
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding-top: 10px;
+  border-bottom: 1px solid #ddd;
+  gap: 10px;
+}
+
+.producto-lista li img {
+  width: 100px;
+  height: 100px;
+  object-fit: cover;
+  margin: 0;
+}
+
+.info-producto {
+  flex: 1;
+  text-align: center;
+}
+
+.producto-detalles {
+  display: flex;
+  justify-content: space-around;
+}
+
+.producto-descripcion {
+  text-align: center;
+}
+
+.producto-nombre, .producto-precio {
+  text-align: left;
+}
+
+.botones {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.producto-lista li .botones button {
+  margin-top: 5px;
+  padding: 10px 15px;
+  border-radius: 5px;
+}
+
+.producto-lista li .botones button.modificar {
+  background-color: var(--yellow-spain-color);
+  color: var(--red-spain-color);
+}
+
+.producto-lista li .botones button.eliminar {
+  background-color: var(--red-spain-color);
+  color: var(--yellow-spain-color);
+}
+
+.producto-container {
+  text-align: center;
+}
+
+.volver-btn {
+  background-color: var(--red-spain-color);
+  color: var(--yellow-spain-color);
+  padding: 1px 15px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  padding-left: 40px;
+  position: relative;
+}
+
+.volver-btn::before {
+  content: "\2190";
+  font-family: Font Awesome;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+button:hover {
+  opacity: 0.8;
+}

@@ -1,7 +1,7 @@
 <div mat-dialog-content class="modal-content">
-  <h3 class="modal-title">¡Éxito!</h3>
   <p class="mensaje">{{ message }}</p>
 </div>
 <div mat-dialog-actions class="modal-actions">
+  <button mat-button class="close-button" (click)="onClick()">Confirmar</button>
   <button mat-button class="close-button" (click)="onNoClick()">Cerrar</button>
 </div>

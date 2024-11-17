@@ -20,4 +20,8 @@ export class SuccessModalComponent {
   onNoClick(): void {
     this.dialogRef.close();
   }
+
+  onClick() {
+    this.dialogRef.close(1);
+  }
 }

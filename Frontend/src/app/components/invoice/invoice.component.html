@@ -1,0 +1,83 @@
+<div class="volver">
+  <div>
+    <button class="volver-btn" (click)="volver()">Volver</button>
+  </div>
+</div>
+<div class="container">
+  <div class="row">
+    <div class="col-md-3">
+      <div class="search-container">
+        <form [formGroup]="searchForm">
+          <input type="text" class="form-control form-control-lg" placeholder="Buscar productos..." aria-label="Buscar"
+            aria-describedby="basic-addon1" formControlName="searchTerm" (keyup)="onSearch()">
+        </form>
+        <ul class="list-group search-results" *ngIf="filteredProducts.length > 0">
+          <li *ngFor="let product of filteredProducts" class="list-group-item" (click)="addProductToCart(product)">
+            {{ product.name }}
+          </li>
+        </ul>
+      </div>
+    </div>
+    <div class="col-md-7" [ngClass]="{'col-md-9': clienteSeleccionado}">
+      <div class="cart-container border">
+        <div class="header-invoices">
+          <h2 class="text-center">FACTURACIÓN</h2>
+          <button *ngIf="cartItems.length > 0" (click)="cleanProductList()">Limpiar productos</button>
+        </div>
+        <div id="facturacion">
+          <div *ngIf="clienteSeleccionado && !mostrarCliente" class="datos-cliente">
+            <p>Nombre: {{clienteSeleccionado.name}} {{clienteSeleccionado.lastName}}</p>
+            <p>NIF: {{ clienteSeleccionado.dni }}</p>
+            <p>Dirección: {{ clienteSeleccionado.address }}</p>
+            <button (click)="borrarCliente()">Borrar</button>
+          </div>
+          <ul class="list-group">
+            <li *ngFor="let cartItem of cartItems" class="productos">
+              <span style="flex-grow: 1;">{{ cartItem.product.name }}</span>
+              <span *ngIf="cartItem.product.stock > 0" class="stock-info">
+                <span class="desaparece">Stock: </span> <span class="green-number">{{
+                  cartItem.product.stock
+                  }}</span>
+              </span>
+              <span *ngIf="cartItem.product.stock === 0" class="stock-info">
+                (Sin Stock)
+              </span>
+              <div class="precios">
+                <span class="fw-bolder" style="margin-right: 50px;">Precio: {{ cartItem.product.price *
+                  cartItem.quantity
+                  }}€</span>
+                <div class="quantity" style="display: flex;">
+                  <button (click)="decrementQuantity(cartItem)">-</button>
+                  <span style="margin: 0 5px;">{{ cartItem.quantity }}</span>
+                  <button (click)="incrementQuantity(cartItem, cartItem.product)">+</button>
+                </div>
+              </div>
+            </li>
+            <p class="total-row pt-3">IVA a aplicar 21%</p>
+            <hr>
+            <li class="total-row" *ngIf="cartItems.length > 0">
+              <p>Precio Final: <span class="fw-bolder">{{ formattedTotal }}€</span></p>
+            </li>
+          </ul>
+        </div>
+      </div>
+      <div *ngIf="cartItems.length > 0" class="btn-generacion mt-2 d-flex justify-content-evenly">
+        <button class="btn btn-warning" (click)="generarPDF()">Imprimir factura</button>
+        <button class="btn btn-success" (click)="guardarFactura()">Guardar factura</button>
+      </div>
+    </div>
+    <div class="col-md-2" *ngIf="mostrarCliente">
+      <h2 class="text-center">Añadir cliente</h2>
+      <input type="text" [(ngModel)]="terminoBusqueda" (input)="buscarCliente()">
+      <ul *ngIf="clientesFiltrados.length > 0" class="list-group">
+        <li *ngFor="let cliente of clientesFiltrados" class="list-group-item" [title]="cliente.dni"
+          (click)="seleccionaCliente(cliente)">
+          {{ cliente.name }} {{cliente.lastName}}
+        </li>
+      </ul>
+      <div *ngIf="clients.length === 0">
+        No se encontraron clientes.
+        <button (click)="goToClients()">Ir a añadir cliente</button>
+      </div>
+    </div>
+  </div>
