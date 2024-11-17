@@ -8,6 +8,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -51,5 +52,27 @@ public class DetailServiceImpl implements DetailService {
         } else {
             log.warn("Producto con ID {} no encontrado", detail.getProductId());
         }
+    }
+
+    /**
+     * KMethod to get a detail by his id
+     * @param id the id
+     * @return the detail
+     */
+    @Override
+    public Optional<Detail> getDetailById(Long id) {
+        return detailRepository.findById(id);
+    }
+
+    /**
+     * Method to get a detail by his invoice id
+     *
+     * @param id the invoice id
+     * @return the detail list
+     */
+    @Override
+    public Optional<List<Detail>> getDetailByInvoiceId(Long id) {
+        List<Detail> details = detailRepository.findAllByInvoiceId(id);
+        return Optional.of(details);
     }
 }

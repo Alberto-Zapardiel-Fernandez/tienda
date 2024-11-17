@@ -3,10 +3,14 @@ import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { InvoiceInterface } from '../interfaces/invoice.interface';
+import { DetailInterface } from '../interfaces/detail.interface';
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceService {
+  getDetail(endpoint: string): Observable<DetailInterface[]> {
+    return this.httpClient.get<DetailInterface[]>(`${this.API_URL}${endpoint}`);
+  }
   getInvoices(endpoint: string): Observable<InvoiceInterface[]> {
     return this.httpClient.get<InvoiceInterface[]>(
       `${this.API_URL}${endpoint}`

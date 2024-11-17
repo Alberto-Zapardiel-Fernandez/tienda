@@ -11,6 +11,7 @@ import {
   ReactiveFormsModule,
 } from '@angular/forms';
 import { InvoiceService } from '../../services/invoice.service';
+import { DetailInterface } from '../../interfaces/detail.interface';
 
 @Component({
   selector: 'app-invoice-list',
@@ -29,6 +30,7 @@ export class InvoiceListComponent implements OnInit {
   clienteSeleccionado: ClientInterface | undefined;
   fechaDesdeSeleccionada?: Date;
   fechaHastaSeleccionada?: Date;
+  detailList: DetailInterface[] = [];
 
   constructor(
     private clientService: ClientService,
@@ -39,119 +41,45 @@ export class InvoiceListComponent implements OnInit {
     this.clientService.getClients('clients').subscribe((clients) => {
       this.clients = clients;
     });
-    // Obtener las facturas desde el API
-    // this.invoiceService.getInvoices().subscribe((invoices) => {
-    //   this.invoices = invoices;
-    //   this.filteredInvoices = [...this.invoices];
-    // });
   }
 
-  verDetalle(num_factura: number, fecha: Date, dni: string) {
-    throw new Error('Method not implemented.');
-  }
-  buscarFacturas(cliente: any) {
-    this.invoices = [];
-    const fechaDesde = this.fechaDesdeSeleccionada ?? null;
-    const fechaHasta = this.fechaHastaSeleccionada ?? null;
-    if (!fechaDesde && !fechaHasta && !cliente) {
-      alert('Selecciona algún filtro');
-    }
-    if (cliente && fechaDesde && fechaHasta) {
-      this.invoiceService
-        .getInvoices(
-          `invoices?dni=${cliente.dni}&minDate=${fechaDesde}&maxDate=${fechaHasta}`
-        )
-        .subscribe({
-          next: (result: InvoiceInterface[]) => {
-            console.log(result);
-            this.invoices = result;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
-      return;
-    } else if (cliente && fechaDesde) {
-      this.invoiceService
-        .getInvoices(`invoices?dni=${cliente.dni}&minDate=${fechaDesde}`)
-        .subscribe({
-          next: (result: InvoiceInterface[]) => {
-            console.log(result);
-            this.invoices = result;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
-      return;
-    } else if (cliente && fechaHasta) {
-      this.invoiceService
-        .getInvoices(`invoices?dni=${cliente.dni}&maxDate=${fechaHasta}`)
-        .subscribe({
-          next: (result: InvoiceInterface[]) => {
-            console.log(result);
-            this.invoices = result;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
-      return;
-    }
-    if (fechaDesde && fechaHasta) {
-      this.invoiceService
-        .getInvoices(`invoices?minDate=${fechaDesde}&maxDate=${fechaHasta}`)
-        .subscribe({
-          next: (result: InvoiceInterface[]) => {
-            console.log(result);
-            this.invoices = result;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
-      return;
-    }
-    if (fechaDesde) {
-      this.invoiceService
-        .getInvoices(`invoices?minDate=${fechaDesde}`)
-        .subscribe({
-          next: (result: InvoiceInterface[]) => {
-            console.log(result);
-            this.invoices = result;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
-      return;
-    }
-    if (fechaHasta) {
-      this.invoiceService
-        .getInvoices(`invoices?maxDate=${fechaHasta}`)
-        .subscribe({
-          next: (result: InvoiceInterface[]) => {
-            console.log(result);
-            this.invoices = result;
-          },
-          error: (err) => {
-            console.error('Error:', err);
-          },
-        });
-      return;
-    }
-    if (cliente) {
-      this.invoiceService.getInvoices(`invoices?dni=${cliente.dni}`).subscribe({
-        next: (result: InvoiceInterface[]) => {
-          console.log(result);
-          this.invoices = result;
+  verDetalle(num_factura: number) {
+    this.invoiceService
+      .getDetail(`detailByInvoiceId?id=${num_factura}`)
+      .subscribe({
+        next: (result: DetailInterface[]) => {
+          this.detailList = result;
+          //TODO En result está la lista de detalle, crear el modal para imprimir
+          //Acordarse de sumar los importes para sacar el total y después meter en todo lo del descuento del cliente
         },
         error: (err) => {
           console.error('Error:', err);
         },
       });
+  }
+  buscarFacturas(cliente: any) {
+    const fechaDesde = this.fechaDesdeSeleccionada ?? null;
+    const fechaHasta = this.fechaHastaSeleccionada ?? null;
+    if (cliente == undefined) {
+      alert('Selecciona un cliente de la lista');
       return;
     }
+    if (!cliente && !fechaDesde && !fechaHasta) {
+      alert('Selecciona al menos 1 filtro');
+      return;
+    }
+    const url = `invoices?${cliente ? `dni=${cliente.dni}&` : ''}${
+      fechaDesde ? `minDate=${fechaDesde}&` : ''
+    }${fechaHasta ? `maxDate=${fechaHasta}` : ''}`;
+
+    this.invoiceService.getInvoices(url).subscribe({
+      next: (result: InvoiceInterface[]) => {
+        this.invoices = result;
+      },
+      error: (err) => {
+        console.error('Error:', err);
+      },
+    });
   }
   goToClients() {
     this.router.navigate(['/client']);

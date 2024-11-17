@@ -47,6 +47,13 @@ public class InvoiceController {
      */
     private DetailService detailService;
 
+    /**
+     * Method to save an invoice
+     * @param products the product list
+     * @param dni the dni of client
+     * @param total the total
+     * @return the invoice inserted
+     */
     @PostMapping(path = "/save_invoice", name = "saveInvoice")
     public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody List<Product> products, @RequestParam String dni,
                                                @NotNull @Positive @RequestParam BigDecimal total) {
@@ -75,6 +82,13 @@ public class InvoiceController {
         }
     }
 
+    /**
+     * Method to get a list of invoices
+     * @param dni the dni of client
+     * @param minDate the min date
+     * @param maxDate the max date
+     * @return the invoice list
+     */
     @GetMapping(path = "/invoices", name = "getInvoices")
     public List<Invoice> getInvoices(@RequestParam(required = false) String dni,
                                      @RequestParam(required = false) String minDate,
