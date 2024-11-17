@@ -2,10 +2,16 @@ import { ProductInterface } from '../interfaces/product-interface';
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { InvoiceInterface } from '../interfaces/invoice.interface';
 @Injectable({
   providedIn: 'root',
 })
 export class InvoiceService {
+  getInvoices(endpoint: string): Observable<InvoiceInterface[]> {
+    return this.httpClient.get<InvoiceInterface[]>(
+      `${this.API_URL}${endpoint}`
+    );
+  }
   API_URL: String = 'http://localhost:8080/v1/api/';
   constructor(private httpClient: HttpClient) {}
   generateInvoice(

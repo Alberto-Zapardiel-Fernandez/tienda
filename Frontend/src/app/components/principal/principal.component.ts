@@ -15,7 +15,6 @@ export class PrincipalComponent implements OnInit {
   user: any;
   ngOnInit(): void {
     this.user = JSON.parse(this.cookieService.get('user'));
-    console.log(this.user);
   }
 
   irA(numero: number) {
@@ -33,7 +32,7 @@ export class PrincipalComponent implements OnInit {
         this.router.navigate(['/invoice']);
         break;
       case 5:
-        this.router.navigate(['/principal']);
+        this.router.navigate(['/invoice-list']);
         break;
       case 6:
         this.router.navigate(['/login/2']);

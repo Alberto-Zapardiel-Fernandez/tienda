@@ -13,6 +13,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -48,7 +49,7 @@ public class InvoiceController {
 
     @PostMapping(path = "/save_invoice", name = "saveInvoice")
     public ResponseEntity<Invoice> saveInvoice(@Valid @RequestBody List<Product> products, @RequestParam String dni,
-                                              @NotNull @Positive @RequestParam BigDecimal total) {
+                                               @NotNull @Positive @RequestParam BigDecimal total) {
 
         try {
             Invoice invoice = Invoice.builder()
@@ -72,5 +73,23 @@ public class InvoiceController {
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Invoice.builder().build());
         }
+    }
+
+    @GetMapping(path = "/invoices", name = "getInvoices")
+    public List<Invoice> getInvoices(@RequestParam(required = false) String dni,
+                                     @RequestParam(required = false) String minDate,
+                                     @RequestParam(required = false) String maxDate) {
+        List<Invoice> invoices;
+        LocalDate minLocalDate = null;
+        LocalDate maxLocalDate = null;
+        if (minDate != null) {
+            minLocalDate = LocalDate.parse(minDate);
+        }
+        if (maxDate != null) {
+            maxLocalDate = LocalDate.parse(maxDate);
+        }
+        invoices = invoiceService.getInvoices(dni, minLocalDate, maxLocalDate);
+
+        return invoices;
     }
 }

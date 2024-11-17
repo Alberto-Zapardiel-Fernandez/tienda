@@ -68,7 +68,7 @@
       <h2 class="text-center">Añadir cliente</h2>
       <input type="text" [(ngModel)]="terminoBusqueda" (input)="buscarCliente()">
       <ul *ngIf="clientesFiltrados.length > 0" class="list-group">
-        <li *ngFor="let cliente of clientesFiltrados" class="list-group-item" [title]="cliente.phone"
+        <li *ngFor="let cliente of clientesFiltrados" class="list-group-item" [title]="cliente.dni"
           (click)="seleccionaCliente(cliente)">
           {{ cliente.name }} {{cliente.lastName}}
         </li>

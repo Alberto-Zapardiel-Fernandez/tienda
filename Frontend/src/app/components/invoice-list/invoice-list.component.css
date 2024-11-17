@@ -1,0 +1,101 @@
+.invoice-list-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background: #ddd;
+}
+
+.search-bar {
+  align-items: center;
+  display: flex;
+  padding: 10px;
+}
+
+.search-bar input {
+  padding: 5px;
+  margin-right: 10px;
+}
+
+.search-bar button {
+  padding: 5px 10px;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+}
+
+table th, table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+
+table th {
+  background-color: #f2f2f2;
+}
+
+.list-group-item {
+  cursor: pointer;
+}
+
+.list-group-item:hover {
+  background-color: #f5f5f5;
+}
+
+.list-group {
+  padding: 0;
+  margin-bottom: 0;
+  border: none;
+  position: absolute;
+}
+
+.list-group li {
+  display: flex;
+  justify-content: space-around;
+  border-bottom: 1px solid #ddd;
+  padding: 10px 10px;
+  align-items: center;
+}
+
+.list-group li:last-child {
+  /* Remove border for the last item */
+  border-bottom: none;
+}
+
+.volver-btn {
+  background-color: var(--red-spain-color);
+  color: var(--yellow-spain-color);
+  padding: 5px 15px;
+  margin-top: 15px;
+  border-radius: 5px;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+  box-shadow: 0px 5px 10px rgba(0, 0, 0, 0.2);
+  padding-left: 40px;
+  position: relative;
+}
+
+.volver-btn::before {
+  content: "\2190";
+  font-family: Font Awesome;
+  position: absolute;
+  left: 15px;
+  top: 50%;
+  transform: translateY(-50%);
+}
+
+.volver {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 15px;
+}
+
+.input-group input[type="date"]:hover {
+  border-color: #007bff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+}

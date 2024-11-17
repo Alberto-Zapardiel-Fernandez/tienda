@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit, NgModule } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormGroup,
@@ -89,6 +89,12 @@ export class InvoiceComponent implements OnInit {
   }
 
   guardarFactura() {
+    const confirmacion = confirm(
+      'Estás seguro de que quieres guardar la factura?'
+    );
+    if (!confirmacion) {
+      return;
+    }
     if (!this.clienteSeleccionado) {
       // Mostrar un diálogo de confirmación
       const confirmar = confirm(

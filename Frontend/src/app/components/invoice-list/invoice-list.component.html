@@ -1,0 +1,64 @@
+<div>
+  <button class="volver-btn" (click)="volver()">Volver</button>
+  <h2 class="text-center">Buscar Facturas</h2>
+</div>
+<div class="invoice-list-container">
+  <div class="search-bar">
+    <div class="d-flex justify-content-around w-100 align-items-center">
+      <div class="col-md-2" *ngIf="mostrarCliente">
+        <h3 class="text-center fw-bolder">Buscar cliente</h3>
+        <input type="text" [(ngModel)]="terminoBusqueda" (input)="buscarCliente()" value="{{clienteSeleccionado?.dni}}"
+          (focus)="borrarCliente()">
+        <ul *ngIf="clientesFiltrados.length > 0" class="list-group">
+          <li *ngFor="let cliente of clientesFiltrados" class="list-group-item" [title]="cliente.dni"
+            (click)="seleccionaCliente(cliente)">
+            {{ cliente.name }} {{cliente.lastName}}
+          </li>
+        </ul>
+        <div *ngIf="clients.length === 0">
+          No se encontraron clientes.
+          <button (click)="goToClients()">Ir a añadir cliente</button>
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h3 class="text-center fw-bolder">Fecha desde</h3>
+        <div class="input-group">
+          <input type="date" class="form-control" id="fecha" [(ngModel)]="fechaDesdeSeleccionada">
+        </div>
+      </div>
+      <div class="col-md-2">
+        <h3 class="text-center fw-bolder">Fecha hasta</h3>
+        <div class="input-group">
+          <input type="date" class="form-control" id="fecha" [(ngModel)]="fechaHastaSeleccionada">
+        </div>
+      </div>
+      <div class="col-md-4">
+        <button class="btn btn-success" (click)="buscarFacturas(clienteSeleccionado)">Buscar</button>
+      </div>
+    </div>
+  </div>
+  <table *ngIf="invoices.length > 0">
+    <thead>
+      <tr>
+        <th>Número de Factura</th>
+        <th>Fecha</th>
+        <th>Cliente</th>
+        <th>Total</th>
+        <th>Acciones</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let invoice of invoices">
+        <td>{{ invoice.id }}</td>
+        <td>{{ invoice.date | date:'dd/MM/yyyy' }}</td>
+        <td>{{ invoice.dni }}</td>
+        <td>{{ invoice.total }}</td>
+        <td>
+          <button (click)="verDetalle(invoice.id,invoice.date,invoice.dni)">Ver detalle</button>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <p *ngIf="invoices.length === 0" class="text-center">No se encontraron facturas.</p>
+</div>
