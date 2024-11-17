@@ -38,10 +38,10 @@ public class Detail {
     private String dni;
 
     @Column(name = "cantidad_producto")
-    private Integer cantidadProducto;
+    private Integer quantity;
 
     @Column(name = "precio_producto")
-    private BigDecimal precioProducto;
+    private BigDecimal price;
 
     @Column(name = "fecha")
     private LocalDate date;

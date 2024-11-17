@@ -43,7 +43,7 @@
                 (Sin Stock)
               </span>
               <div class="precios">
-                <span class="fw-bolder" style="margin-right: 50px;">Precio Total: {{ cartItem.product.price *
+                <span class="fw-bolder" style="margin-right: 50px;">Precio: {{ cartItem.product.price *
                   cartItem.quantity
                   }}€</span>
                 <div class="quantity" style="display: flex;">
@@ -53,8 +53,10 @@
                 </div>
               </div>
             </li>
-            <li class="total-row pt-4" *ngIf="cartItems.length > 0">
-              <p>Precio Final: <span class="fw-bolder">{{ totalAmount }}€</span></p>
+            <p class="total-row pt-3">IVA a aplicar 21%</p>
+            <hr>
+            <li class="total-row" *ngIf="cartItems.length > 0">
+              <p>Precio Final: <span class="fw-bolder">{{ formattedTotal }}€</span></p>
             </li>
           </ul>
         </div>

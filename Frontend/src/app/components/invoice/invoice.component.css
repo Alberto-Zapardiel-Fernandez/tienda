@@ -140,7 +140,7 @@
   display: flex;
   justify-content: flex-end !important;
   margin-right: 15%;
-  padding: 10px;
+  margin-bottom: 0;
   /* Puedes agregar más estilos aquí, como fondo, borde, etc. */
 }
 

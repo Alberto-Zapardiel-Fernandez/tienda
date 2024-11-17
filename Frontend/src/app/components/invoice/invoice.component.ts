@@ -35,6 +35,7 @@ export class InvoiceComponent implements OnInit {
   clientesFiltrados: ClientInterface[] = [];
   clienteSeleccionado: ClientInterface | undefined;
   mostrarCliente: boolean = true;
+  formattedTotal: string = '';
 
   constructor(
     private fb: FormBuilder,
@@ -160,11 +161,15 @@ export class InvoiceComponent implements OnInit {
     localStorage.removeItem('cartItems');
   }
   calculateTotal() {
-    this.totalAmount = this.cartItems
-      .reduce((total, item) => {
-        return total + item.product.price * item.quantity;
-      }, 0)
-      .toFixed(2);
+    const subtotal = this.cartItems.reduce((total, item) => {
+      return total + item.product.price * item.quantity;
+    }, 0);
+
+    const vatRate = 0.21; // 21% VAT rate
+    const vatAmount = subtotal * vatRate;
+
+    this.totalAmount = subtotal + vatAmount;
+    this.formattedTotal = this.totalAmount.toFixed(2);
   }
   saveCartItems() {
     if (typeof localStorage !== 'undefined') {

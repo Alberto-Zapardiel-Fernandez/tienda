@@ -70,8 +70,8 @@ public class InvoiceController {
                         .invoiceId(id)
                         .productId(product.getId())
                         .dni(dni)
-                        .cantidadProducto(product.getQuantity())
-                        .precioProducto(product.getPrice())
+                        .quantity(product.getQuantity())
+                        .price(product.getPrice())
                         .date(LocalDate.now())
                         .build();
                 detailService.saveDetail(detail);

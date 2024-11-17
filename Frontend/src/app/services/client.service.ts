@@ -1,11 +1,15 @@
 import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { ClientInterface } from '../interfaces/client.interface';
 
 @Injectable({
   providedIn: 'root',
 })
 export class ClientService {
+  getClientById(endpoint: string): Observable<ClientInterface> {
+    return this.httpClient.get<ClientInterface>(`${this.API_URL}${endpoint}`);
+  }
   updateClient(
     endpoint: string,
     clientData: {

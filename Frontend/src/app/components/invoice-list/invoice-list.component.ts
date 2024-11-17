@@ -4,12 +4,7 @@ import { ClientInterface } from '../../interfaces/client.interface';
 import { InvoiceInterface } from '../../interfaces/invoice.interface';
 import { ClientService } from '../../services/client.service';
 import { Router } from '@angular/router';
-import {
-  FormBuilder,
-  FormGroup,
-  FormsModule,
-  ReactiveFormsModule,
-} from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { InvoiceService } from '../../services/invoice.service';
 import { DetailInterface } from '../../interfaces/detail.interface';
 
@@ -31,6 +26,7 @@ export class InvoiceListComponent implements OnInit {
   fechaDesdeSeleccionada?: Date;
   fechaHastaSeleccionada?: Date;
   detailList: DetailInterface[] = [];
+  showModal = false;
 
   constructor(
     private clientService: ClientService,
@@ -44,18 +40,7 @@ export class InvoiceListComponent implements OnInit {
   }
 
   verDetalle(num_factura: number) {
-    this.invoiceService
-      .getDetail(`detailByInvoiceId?id=${num_factura}`)
-      .subscribe({
-        next: (result: DetailInterface[]) => {
-          this.detailList = result;
-          //TODO En result está la lista de detalle, crear el modal para imprimir
-          //Acordarse de sumar los importes para sacar el total y después meter en todo lo del descuento del cliente
-        },
-        error: (err) => {
-          console.error('Error:', err);
-        },
-      });
+    this.router.navigate([`detail-list/${num_factura}`]);
   }
   buscarFacturas(cliente: any) {
     const fechaDesde = this.fechaDesdeSeleccionada ?? null;

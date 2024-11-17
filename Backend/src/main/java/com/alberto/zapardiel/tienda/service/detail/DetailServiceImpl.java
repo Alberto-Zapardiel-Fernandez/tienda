@@ -40,14 +40,14 @@ public class DetailServiceImpl implements DetailService {
         Optional<Product> product = productRepository.findById(detail.getProductId());
         if (product.isPresent()) {
             Product existingProduct = product.get();
-            int newStock = existingProduct.getStock() - detail.getCantidadProducto();
+            int newStock = existingProduct.getStock() - detail.getQuantity();
             if (newStock >= 0) {
                 existingProduct.setStock(newStock);
                 productRepository.save(existingProduct);
                 log.info("Detalle insertado {}. Stock actualizado para producto {}", detail.getId(), existingProduct.getId());
             } else {
                 log.error("Stock insuficiente para el producto {}. Cantidad actual: {}, Cantidad vendida: {}",
-                        existingProduct.getId(), existingProduct.getStock(), detail.getCantidadProducto());
+                        existingProduct.getId(), existingProduct.getStock(), detail.getQuantity());
             }
         } else {
             log.warn("Producto con ID {} no encontrado", detail.getProductId());
