@@ -1,13 +1,32 @@
-<h1 class="text-center p-5">Bienvenido {{user.name}} {{user.lastName}}</h1>
-<div class="container">
-  <div class="container d-flex flex-wrap justify-content-center gap-4">
-    @if (user.rol == 1) {
-    <button (click)="irA(1)" class="btn mt-4 btn-vertical">Gestión Usuarios</button>
-    }
-    <button (click)="irA(2)" class="btn mt-4 btn-vertical">Gestión clientes</button>
-    <button (click)="irA(3)" class="btn mt-4 btn-vertical">Gestión productos</button>
-    <button (click)="irA(4)" class="btn mt-4 btn-vertical">TRABAJO NORMAL</button>
-    <button (click)="irA(5)" class="btn mt-4 btn-vertical">Generación de resumen de facturas</button>
-    <button (click)="irA(6)" class="btn mt-4 btn-vertical">Volver a login</button>
-  </div>
-</div>
+<body>
+  <header>
+    <h1 class="text-center">Bienvenido {{user.name}}</h1>
+  </header>
+  <main>
+    <div class="container">
+      @if (user.rol == 1) {
+      <div (click)="irA(1)" class="card">
+        <div class="card-content">Gestión de Usuarios</div>
+      </div>
+      }
+      <div (click)="irA(2)" class="card">
+        <div class="card-content">Gestión de clientes</div>
+      </div>
+      <div (click)="irA(3)" class="card">
+        <div class="card-content">Gestión de productos</div>
+      </div>
+      <div (click)="irA(4)" class="card">
+        <div class="card-content">Trabajo normal</div>
+      </div>
+      <div (click)="irA(5)" class="card">
+        <div class="card-content">Generación de resumen de facturas</div>
+      </div>
+      <div (click)="irA(6)" class="card go-back">
+        <div class="card-content">Volver a login</div>
+      </div>
+    </div>
+  </main>
+  <footer>
+    <p>&copy; 2025 Alberto Zapardiel Fernández</p>
+  </footer>
+</body>
