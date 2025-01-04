@@ -258,6 +258,7 @@ export class LoginComponent implements OnInit {
       },
       error: (err) => {
         console.error('Error:', err);
+        alert('El usuario no existe');
       },
     });
   }
