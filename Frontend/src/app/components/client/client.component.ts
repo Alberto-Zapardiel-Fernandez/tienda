@@ -109,7 +109,6 @@ export class ClientComponent implements OnInit {
   getClients() {
     this.clientService.getClients('clients').subscribe({
       next: (result) => {
-        console.log(result);
         this.clientList = result;
       },
       error: (err) => {
@@ -128,7 +127,6 @@ export class ClientComponent implements OnInit {
     if (resultado) {
       this.clientService.deleteClient('client', row.id).subscribe({
         next: (result) => {
-          console.log(result);
           this.router.navigate(['principal']);
         },
         error: (err) => {
@@ -195,7 +193,6 @@ export class ClientComponent implements OnInit {
       })
       .subscribe({
         next: (result) => {
-          console.log('Cliente creado con éxito ', result);
           this.router.navigate(['principal']);
         },
         error: (err) => {
@@ -228,7 +225,6 @@ export class ClientComponent implements OnInit {
       })
       .subscribe({
         next: (result) => {
-          console.log('Cliente creado con éxito ', result);
           this.router.navigate(['principal']);
         },
         error: (err) => {

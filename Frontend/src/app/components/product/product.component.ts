@@ -102,7 +102,6 @@ export class ProductComponent implements OnInit {
     }
   }
   onFileSelected(event: any) {
-    console.log('cambiando');
     const file = event.target.files[0];
     if (file) {
       const reader = new FileReader();
@@ -114,7 +113,6 @@ export class ProductComponent implements OnInit {
   }
   //Método para ver los productos y modificarlos
   verProductos() {
-    console.log('Ver productos');
     this.router.navigate(['/product-list']);
   }
 
@@ -176,7 +174,6 @@ export class ProductComponent implements OnInit {
           });
       }
     } else {
-      console.log('Formulario inválido');
       this.productForm.reset();
     }
   }
@@ -203,7 +200,6 @@ export class ProductComponent implements OnInit {
   private getCategories() {
     this.categoryService.getCategories('categories').subscribe({
       next: (result) => {
-        console.log(result);
         this.categories = result;
       },
       error: (err) => {

@@ -84,14 +84,12 @@ export class LoginComponent implements OnInit {
     });
     this.user = this.cookieService.get('user');
     if (this.user == '') {
-      console.log('Vacio');
     } else if (this.id != '1' && this.id != '2') {
       this.user = JSON.parse(this.user);
       this.router.navigate(['/principal']);
     }
     //Al entrar, si vengo para hacer el update borro la cookie
     if (this.update || !this.register) {
-      console.log('entro');
       this.cookieService.delete('user');
     }
     //Obtengo los usuarios
@@ -192,7 +190,6 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (result) => {
           // Maneja el inicio de sesión exitoso
-          console.log('Usuario actualizado con éxito:', result);
           const usuario: UserInterface = this.setUserData(result);
           this.cookieService.delete('user');
           this.cookieService.set('user', JSON.stringify(usuario));
@@ -228,7 +225,6 @@ export class LoginComponent implements OnInit {
       .subscribe({
         next: (result) => {
           // Maneja el inicio de sesión exitoso
-          console.log('Usuario creado con éxito:', result);
           const usuario: UserInterface = this.setUserData(result);
           this.cookieService.delete('user');
           //Borramos la cookie si la hubiera para guardar el nuevo user, entonces reedirigimos
@@ -247,7 +243,6 @@ export class LoginComponent implements OnInit {
   getUser(email: string, pass: string) {
     this.userService.getUser('user/byEmailAndPass', { email, pass }).subscribe({
       next: (result) => {
-        console.log(result);
         if (result.id != null) {
           const usuario: UserInterface = this.setUserData(result);
           this.cookieService.delete('user');
@@ -298,7 +293,6 @@ export class LoginComponent implements OnInit {
   getUsers() {
     this.userService.getUsers('users').subscribe({
       next: (result) => {
-        console.log(result);
         this.userList = result;
       },
       error: (err) => {

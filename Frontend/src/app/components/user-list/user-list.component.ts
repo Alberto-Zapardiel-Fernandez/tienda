@@ -73,7 +73,6 @@ export class UserListComponent implements OnInit {
     if (resultado) {
       this.userService.deleteUser('user', row.id).subscribe({
         next: (result) => {
-          console.log(result);
           this.router.navigate(['login']);
         },
         error: (err) => {

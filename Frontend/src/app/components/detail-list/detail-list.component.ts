@@ -96,7 +96,6 @@ export class DetailListComponent implements OnInit {
       )
       .subscribe({
         next: (blob) => {
-          console.log(blob);
           saveAs(blob, 'factura_' + this.num_factura + '.xlsx');
         },
         error: (error) => {

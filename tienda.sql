@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 26-12-2024 a las 19:00:54
+-- Tiempo de generación: 04-01-2025 a las 19:17:06
 -- Versión del servidor: 10.4.6-MariaDB
 -- Versión de PHP: 7.2.22
 
@@ -31,7 +31,7 @@ SET time_zone = "+00:00";
 CREATE TABLE `categoria` (
   `id_categoria` int(11) NOT NULL,
   `nombre` varchar(255) NOT NULL,
-  `descripcion` varchar(255) DEFAULT NULL
+  `descripcion` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
@@ -39,8 +39,7 @@ CREATE TABLE `categoria` (
 --
 
 INSERT INTO `categoria` (`id_categoria`, `nombre`, `descripcion`) VALUES
-(1, 'Muebles', 'Muebles en general'),
-(2, 'Ferretería', 'Todo lo relacionado con la ferretería');
+(1, 'Muebles', '');
 
 -- --------------------------------------------------------
 
@@ -65,6 +64,7 @@ CREATE TABLE `cliente` (
 
 INSERT INTO `cliente` (`id`, `dni`, `nombre`, `apellidos`, `telefono`, `email`, `direccion`, `descuento`) VALUES
 (6, '04224038L', 'Alberto2', 'Zapardiel', '123456788', 'prueba@admin.com', 'Calle cerrada, 22', 0),
+(8, '04224111L', 'Alberto', 'Zapardiel Fernandez', '618015007', 'alberto.zapardiel.fernandez@gmail.com', 'Calle de Ávila 11', 0),
 (1, '12312312L', 'Alberto', 'Zapardiel Fernández', '123456789', 'admin@admin.com', 'Calle abierta, 22', 25);
 
 -- --------------------------------------------------------
@@ -83,19 +83,6 @@ CREATE TABLE `detalle` (
   `fecha` date NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
---
--- Volcado de datos para la tabla `detalle`
---
-
-INSERT INTO `detalle` (`id`, `num_factura`, `id_producto`, `dni`, `cantidad_producto`, `precio_producto`, `fecha`) VALUES
-(18, 17, 36, '04224038L', 1, 1, '2024-12-12'),
-(19, 17, 39, '04224038L', 1, 14, '2024-12-12'),
-(20, 17, 49, '04224038L', 2, 61.68, '2024-12-12'),
-(21, 18, 36, '04224038L', 1, 1, '2024-12-12'),
-(22, 18, 39, '04224038L', 1, 14, '2024-12-12'),
-(23, 19, 49, '04224038L', 1, 61.68, '2024-12-26'),
-(24, 19, 44, '04224038L', 1, 27.73, '2024-12-26');
-
 -- --------------------------------------------------------
 
 --
@@ -108,15 +95,6 @@ CREATE TABLE `factura` (
   `fecha` date NOT NULL,
   `total` double NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
-
---
--- Volcado de datos para la tabla `factura`
---
-
-INSERT INTO `factura` (`num_factura`, `dni`, `fecha`, `total`) VALUES
-(17, '04224038L', '2024-12-12', 167.4156),
-(18, '04224038L', '2024-12-12', 18.15),
-(19, '04224038L', '2024-12-26', 108.1861);
 
 -- --------------------------------------------------------
 
@@ -140,9 +118,7 @@ CREATE TABLE `producto` (
 --
 
 INSERT INTO `producto` (`id_producto`, `nombre`, `descripcion`, `precio`, `stock`, `id_categoria`, `image_url`, `quantity`) VALUES
-(36, 'Prueba', 'España', '1.00', 4, 2, '/images/128-spain.png', 0),
-(39, 'Prueba de producto', 'Una prueba más dasd asdasdasd as da dasd as dasd asd asd as dasd as', '14.00', 0, 2, '/images/128-spain.png', 0),
-(41, 'Producto_4e345', 'Descripción genérica', '77.89', 62, 1, '/images/028-puerto-rico.png', 0),
+(36, 'Prueba', 'España', '1.00', 3, 2, '/images/128-spain.png', 0),
 (42, 'Producto_90eb3', 'Descripción genérica', '15.70', 34, 1, '/images/default_image.jpeg', 0),
 (43, 'Producto_25090', 'Descripción genérica', '53.15', 69, 1, '/images/default_image.jpeg', 0),
 (44, 'Producto_2d8ee', 'Descripción genérica', '27.73', 76, 1, '/images/default_image.jpeg', 0),
@@ -241,8 +217,7 @@ INSERT INTO `producto` (`id_producto`, `nombre`, `descripcion`, `precio`, `stock
 (137, 'Producto_2a2a5', 'Descripción genérica', '69.44', 63, 1, '/images/default_image.jpeg', 0),
 (138, 'Producto_42b68', 'Descripción genérica', '51.06', 30, 1, '/images/default_image.jpeg', 0),
 (139, 'Producto_cc167', 'Descripción genérica', '10.02', 48, 1, '/images/default_image.jpeg', 0),
-(140, 'Producto_18abb', 'Descripción genérica', '22.97', 73, 1, '/images/default_image.jpeg', 0),
-(141, 'Mariana', 'eqsdas', '123.00', 1123, 2, '/images/18ab3cd8-5fcf-4be2-adce-7314fe90bfa5_128-spain.png', 0);
+(140, 'Producto_18abb', 'Descripción genérica', '22.97', 73, 1, '/images/default_image.jpeg', 0);
 
 -- --------------------------------------------------------
 
@@ -262,14 +237,6 @@ CREATE TABLE `usuario` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 --
--- Volcado de datos para la tabla `usuario`
---
-
-INSERT INTO `usuario` (`id`, `nombre`, `apellidos`, `email`, `pass`, `rol`, `dni`, `telefono`) VALUES
-(26, 'Admin', 'admin', 'admin@gmail.com', '$2a$10$wln1wFVZ6gMrStI1P6fdw.OOIGX1WcwKfVdzzuiHJc3cvE8dtFrgW', 1, '12345677L', '987654321'),
-(27, 'Empleado', 'Empleado', 'empleado@gmail.com', '$2a$10$6WGtLnNyD1WhZxk3pftsIumIXJLhA2RSFm/JkL94ydXnaWMRVCoSG', 0, '87654321L', '123456789');
-
---
 -- Índices para tablas volcadas
 --
 
@@ -277,8 +244,7 @@ INSERT INTO `usuario` (`id`, `nombre`, `apellidos`, `email`, `pass`, `rol`, `dni
 -- Indices de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  ADD PRIMARY KEY (`id_categoria`),
-  ADD UNIQUE KEY `nombre` (`nombre`);
+  ADD PRIMARY KEY (`id_categoria`);
 
 --
 -- Indices de la tabla `cliente`
@@ -306,8 +272,7 @@ ALTER TABLE `factura`
 -- Indices de la tabla `producto`
 --
 ALTER TABLE `producto`
-  ADD PRIMARY KEY (`id_producto`),
-  ADD KEY `id_categoria` (`id_categoria`);
+  ADD PRIMARY KEY (`id_producto`);
 
 --
 -- Indices de la tabla `usuario`
@@ -323,37 +288,37 @@ ALTER TABLE `usuario`
 -- AUTO_INCREMENT de la tabla `categoria`
 --
 ALTER TABLE `categoria`
-  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+  MODIFY `id_categoria` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=17;
 
 --
 -- AUTO_INCREMENT de la tabla `cliente`
 --
 ALTER TABLE `cliente`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=8;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
 
 --
 -- AUTO_INCREMENT de la tabla `detalle`
 --
 ALTER TABLE `detalle`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=25;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
 
 --
 -- AUTO_INCREMENT de la tabla `factura`
 --
 ALTER TABLE `factura`
-  MODIFY `num_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=20;
+  MODIFY `num_factura` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=21;
 
 --
 -- AUTO_INCREMENT de la tabla `producto`
 --
 ALTER TABLE `producto`
-  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=142;
+  MODIFY `id_producto` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=143;
 
 --
 -- AUTO_INCREMENT de la tabla `usuario`
 --
 ALTER TABLE `usuario`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=28;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=30;
 
 --
 -- Restricciones para tablas volcadas
@@ -365,6 +330,12 @@ ALTER TABLE `usuario`
 ALTER TABLE `detalle`
   ADD CONSTRAINT `detalle_ibfk_1` FOREIGN KEY (`id_producto`) REFERENCES `producto` (`id_producto`),
   ADD CONSTRAINT `detalle_ibfk_2` FOREIGN KEY (`num_factura`) REFERENCES `factura` (`num_factura`);
+
+--
+-- Filtros para la tabla `factura`
+--
+ALTER TABLE `factura`
+  ADD CONSTRAINT `factura_ibfk_1` FOREIGN KEY (`dni`) REFERENCES `cliente` (`dni`);
 
 --
 -- Filtros para la tabla `producto`
