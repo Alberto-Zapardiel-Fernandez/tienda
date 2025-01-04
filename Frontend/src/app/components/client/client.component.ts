@@ -98,8 +98,10 @@ export class ClientComponent implements OnInit {
   }
 
   announceSortChange(sortState: Sort) {
-    if (sortState.address) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.address}ending`);
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(
+        `Sorted ${sortState.active} ${sortState.direction}ending`
+      );
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
