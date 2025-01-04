@@ -90,7 +90,8 @@ export class LoginComponent implements OnInit {
       this.router.navigate(['/principal']);
     }
     //Al entrar, si vengo para hacer el update borro la cookie
-    if (this.update) {
+    if (this.update || !this.register) {
+      console.log('entro');
       this.cookieService.delete('user');
     }
     //Obtengo los usuarios
@@ -98,7 +99,7 @@ export class LoginComponent implements OnInit {
   }
   toogleRegister(event: MouseEvent): void {
     event.preventDefault();
-    this.register = this.register == false ? true : false;
+    this.register = this.register === false ? true : false;
     this.router.navigate(['/login']);
     this.nombreValue = '';
     this.apellidosValue = '';
