@@ -97,7 +97,6 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
     if (sortState.address) {
       this._liveAnnouncer.announce(`Sorted ${sortState.address}ending`);
