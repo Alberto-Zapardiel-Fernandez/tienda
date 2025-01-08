@@ -74,7 +74,6 @@ export class InvoiceComponent implements OnInit {
     this.clienteSeleccionado = cliente;
     this.clientesFiltrados = [];
     this.mostrarCliente = false;
-    console.log(cliente);
   }
   goToClients() {
     this.router.navigate(['/client']);
@@ -109,7 +108,6 @@ export class InvoiceComponent implements OnInit {
       ...cartItem.product,
       quantity: cartItem.quantity,
     }));
-    console.log(productosConCantidad);
     this.invoiceService
       .generateInvoice(
         'save_invoice',
@@ -213,7 +211,6 @@ export class InvoiceComponent implements OnInit {
   }
 
   incrementQuantity(cartItem: any, product: ProductInterface): void {
-    console.log(product.stock);
     if (cartItem.quantity < product.stock) {
       cartItem.quantity++;
     } else {

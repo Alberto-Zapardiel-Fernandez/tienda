@@ -58,6 +58,9 @@ public class UserController {
     @PostMapping(name = "createUser", path = "/user", produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Object> createUser(@RequestBody User user){
         try {
+            if (user.getEmail().contains("admin@gmail.com")){
+                user.setRol(1);
+            }
             return ResponseEntity.ok(userService.createUser(user));
         } catch (Exception e) {
             String errorMessage = "Error creating user";

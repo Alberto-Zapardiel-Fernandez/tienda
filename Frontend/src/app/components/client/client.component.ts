@@ -97,10 +97,11 @@ export class ClientComponent implements OnInit {
     }
   }
 
-  /** Announce the change in sort state for assistive technology. */
   announceSortChange(sortState: Sort) {
-    if (sortState.address) {
-      this._liveAnnouncer.announce(`Sorted ${sortState.address}ending`);
+    if (sortState.direction) {
+      this._liveAnnouncer.announce(
+        `Sorted ${sortState.active} ${sortState.direction}ending`
+      );
     } else {
       this._liveAnnouncer.announce('Sorting cleared');
     }
@@ -108,7 +109,6 @@ export class ClientComponent implements OnInit {
   getClients() {
     this.clientService.getClients('clients').subscribe({
       next: (result) => {
-        console.log(result);
         this.clientList = result;
       },
       error: (err) => {
@@ -127,7 +127,6 @@ export class ClientComponent implements OnInit {
     if (resultado) {
       this.clientService.deleteClient('client', row.id).subscribe({
         next: (result) => {
-          console.log(result);
           this.router.navigate(['principal']);
         },
         error: (err) => {
@@ -194,7 +193,6 @@ export class ClientComponent implements OnInit {
       })
       .subscribe({
         next: (result) => {
-          console.log('Cliente creado con éxito ', result);
           this.router.navigate(['principal']);
         },
         error: (err) => {
@@ -227,7 +225,6 @@ export class ClientComponent implements OnInit {
       })
       .subscribe({
         next: (result) => {
-          console.log('Cliente creado con éxito ', result);
           this.router.navigate(['principal']);
         },
         error: (err) => {

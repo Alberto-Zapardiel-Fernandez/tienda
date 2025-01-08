@@ -1,5 +1,5 @@
 <div class="container" *ngIf="verClientes">
-  <h2 class="text-center mt-5">Gestión de clientes</h2>
+  <h2 class="text-center pt-5">Gestión de clientes</h2>
   <table mat-table [dataSource]="dataSource" matSort (matSortChange)="announceSortChange($event)"
     class="mat-elevation-z8">
     <!-- Position Column -->
@@ -76,7 +76,7 @@
   </div>
 </div>
 <div *ngIf="!verClientes">
-  <h2>{{ register ? 'Registrar Cliente' : 'Actualizar Cliente' }}</h2>
+  <h2 class="text-center pt-5">{{ register ? 'Registrar Cliente' : 'Actualizar Cliente' }}</h2>
   <div class="example-container">
     <form (ngSubmit)="createOrUpdateClient()">
       <!--NOMBRE-->

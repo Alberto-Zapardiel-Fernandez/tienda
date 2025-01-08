@@ -78,7 +78,6 @@ export class ProductosComponent implements OnInit {
             }
           });
           this.productList = result;
-          console.log(result);
         } else {
           console.error('No se encontraron productos');
         }
@@ -96,7 +95,6 @@ export class ProductosComponent implements OnInit {
   }
 
   modificarProducto(producto: ProductInterface) {
-    console.log('Modificar producto:', producto);
     this.router.navigate(['/product', { id: producto.id }]);
   }
 }
